@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>联系人</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+		<link href="../../css/mui.indexedlist.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				overflow: hidden;
+			}
+			
+			.mui-indexed-list {
+				border-top: none;
+			}
+			
+			.search-box {
+				padding: 10px;
+				background-color: #efeff4;
+			}
+			
+			.mui-search input {
+				background-color: #fff;
+				border-radius: 6px !important;
+			}
+			
+			.mui-indexed-list {
+				background-color: #efeff4;
+			}
+						
+			.mui-list-bar-wrap{
+				position: relative;
+			}
+					
+			.mui-table-view-cell .mui-slider-handle .mui-media-object {
+				max-width: 36px;
+				width: 36px;
+				height: 36px;
+			}
+			
+			.contact-name {
+				padding: 7px 0;
+				color: #000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">通讯录</h1>
+		</header>
+		<div class="mui-content">
+			<div id="list" class="mui-indexed-list">
+				<div class="search-box">
+					<div class="mui-indexed-list-search mui-input-row mui-search">
+						<input type="search" class="mui-input-speech mui-input-clear mui-indexed-list-search-input" placeholder="搜索，支持语音输入">
+					</div>
+				</div>
+				<div class="mui-indexed-list-bar">
+					<div class="mui-list-bar-wrap">
+						<a>A</a>
+						<a>B</a>
+						<a>C</a>
+						<a>D</a>
+					</div>
+				</div>
+				<div class="mui-indexed-list-alert"></div>
+				<div class="mui-indexed-list-inner">
+					<div class="mui-indexed-list-empty-alert">没有数据</div>
+					<ul class="mui-table-view">
+						<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>
+						<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">阿克苏</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="BPL" data-tags="ALaShanKou" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">阿拉山口</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="AAT" data-tags="ALeTai" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">阿勒泰</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="NGQ" data-tags="ALiKunSha" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">阿里昆莎</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="AQG" data-tags="AnQingTianZhuShan" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">安庆天柱山</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="MFM" data-tags="AoMenGuoJi" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">澳门</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-group="B" class="mui-table-view-divider mui-indexed-list-group">B</li>
+						<li data-value="BSD" data-tags="BaoShan" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">保山</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="BAV" data-tags="BaoTou" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">包头</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="BHY" data-tags="BeiHaiFuCheng" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">北海福成</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="NAY" data-tags="BeiJingNanYuan" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">北京南苑</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="PEK" data-tags="BeiJingShouDuGuoJi" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">北京首都</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-group="C" class="mui-table-view-divider mui-indexed-list-group">C</li>
+						<li data-value="NBS" data-tags="ChangBaiShan" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">长白山</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="CGQ" data-tags="ChangChunLongJiaGuoJi" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">长春龙嘉</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="CGD" data-tags="ChangDeTaoHuaYuan" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">常德桃花源</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="BPX" data-tags="ChangDuBangDa" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">昌都邦达</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="CSX" data-tags="ChangShaHuangHuaGuoJi" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">长沙黄花</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="CIH" data-tags="ChangZhiWangCun" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">长治王村</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="CZX" data-tags="ChangZhouBenNiu" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">常州奔牛</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="CTU" data-tags="ChengDuShuangLiuGuoJi" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">成都双流</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="CIF" data-tags="ChiFeng" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg">
+									<div class="mui-media-body">
+										<div class="contact-name">赤峰</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-group="D" class="mui-table-view-divider mui-indexed-list-group">D</li>
+						<li data-value="DLU" data-tags="DaLi" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">大理</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="DLC" data-tags="DaLianZhouShuiZiGuoJi" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">大连周水子</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="DQA" data-tags="DaQingSaErTu" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">大庆萨尔图</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="DAT" data-tags="DaTongDongWangZhuang" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">大同东王庄</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="DAX" data-tags="DaZhouHeShi" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">达州河市</div>
+									</div>
+								</a>
+							</div>
+						</li>
+						<li data-value="DDG" data-tags="DanDongLangTou" class="mui-table-view-cell mui-indexed-list-item">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">备注</a>
+							</div>
+							<div class="mui-slider-handle mui-clearfix">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="../../images/yhy.png">
+									<div class="mui-media-body">
+										<div class="contact-name">丹东浪头</div>
+									</div>
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/mui.indexedlist.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				//swipeBack: true //启用右滑关闭功能
+			});
+			mui.ready(function() {
+				var header = document.querySelector('header.mui-bar');
+				var list = document.getElementById('list');
+				//calc hieght
+				list.style.height = (document.body.offsetHeight - header.offsetHeight + 1) + 'px';
+				//create
+				window.indexedList = new mui.IndexedList(list);
+			});
+			
+			mui('.mui-table-view').on('tap','.mui-table-view-cell',function(){
+				clicked('contact-profile.html',false);
+			});
+		</script>
+	</body>
+
+</html>

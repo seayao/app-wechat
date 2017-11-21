@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>分享与推荐</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+		<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.mui-input-group {
+				margin-bottom: 20px;
+			}
+								
+			.btn-handle-wrap{
+				
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back()">
+				<span class="mui-icon mui-icon-left-nav"></span>关于
+			</button>
+			<h1 class="mui-title">分享与推荐</h1>
+			<a id="share" class="mui-pull-right mui-icon mui-icon-redo" style="color: #fff;"></a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
+				<div class="mui-scroll">
+					<div class="">
+						<p>logo</p>
+						<img src="../../images/logo1.png" alt="logo" />
+					</div>
+
+					<form class="mui-input-group">
+						<div class="mui-input-row">
+							<label>网址</label>
+							<input id="shareHref" type="text" class="mui-input-speech mui-input-clear" placeholder="请输入网址">
+						</div>
+					</form>
+
+					<form class="mui-input-group">
+						<div class="mui-input-row">
+							<label>标题</label>
+							<input id="shareTitle" type="text" class="mui-input-speech mui-input-clear" placeholder="请输入标题">
+						</div>
+					</form>
+
+					<div style="position: relative;">
+						<div class="mui-input-row">
+							<textarea id="shareContent" class="shareContent" rows="5" placeholder="请输入内容"></textarea>
+						</div>
+
+						<!--按钮操作-->
+						<div class="btn-handle-wrap mui-text-center">
+							<button type="button" class="mui-btn" onclick="celarContent()">清空内容</button>
+							<button type="button" class="mui-btn mui-btn-success" onclick="startRecognize()">语音输入</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init();
+			//初始化区域滚动
+			mui('.mui-scroll-wrapper').scroll();
+
+			var text = document.getElementById('shareContent');
+
+			function startRecognize() {
+				if(plus.os.name == 'Android' && navigator.userAgent.indexOf('StreamApp') > 0) {
+					plus.nativeUI.toast('当前环境暂不支持语音识别插件');
+					return;
+				}
+				var options = {};
+				options.engine = 'iFly';
+				//options.punctuation = false;	// 是否需要标点符号 
+				//("开始语音识别：");
+				plus.speech.startRecognize(options, function(s) {
+					//(s);
+					text.value += s;
+				}, function(e) {
+					//("语音识别失败：" + e.message);
+				});
+			}
+
+			function celarContent() {
+				text.value = "";
+			}
+
+			//分享操作
+			var shareHref = null,
+				shareTitle = null,
+				shareContent = null,
+				shareThumbs = null;
+			var shares = {};
+			mui.plusReady(function() {
+				plus.share.getServices(function(s) {
+					if(s && s.length > 0) {
+						for(var i = 0; i < s.length; i++) {
+							var t = s[i];
+							shares[t.id] = t;
+						}
+					}
+				}, function() {
+					console.log("获取分享服务列表失败");
+				});
+			});
+
+			//分享链接点击事件
+			document.getElementById("share").addEventListener('tap', function() {
+				var ids = [{
+						id: "weixin",
+						ex: "WXSceneSession"
+					}, {
+						id: "weixin",
+						ex: "WXSceneTimeline"
+					}, {
+						id: "sinaweibo"
+					}, {
+						id: "tencentweibo"
+					}, {
+						id: "qq"
+					}],
+					bts = [{
+						title: "发送给微信好友"
+					}, {
+						title: "分享到微信朋友圈"
+					}, {
+						title: "分享到新浪微博"
+					}, {
+						title: "分享到腾讯微博"
+					}, {
+						title: "分享到QQ"
+					}];
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: bts
+				}, function(e) {
+					var i = e.index;
+					if(i > 0) {
+						var s_id = ids[i - 1].id;
+						var share = shares[s_id];
+						if(share) {
+							if(share.authenticated) {
+								shareMessage(share, ids[i - 1].ex);
+							} else {
+								share.authorize(function() {
+									shareMessage(share, ids[i - 1].ex);
+								}, function(e) {
+									console.log("认证授权失败：" + e.code + " - " + e.message);
+								});
+							}
+						} else {
+							mui.toast("无法获取分享服务，请检查manifest.json中分享插件参数配置")
+						}
+					}
+				});
+			});
+
+			//分享模块
+			function shareMessage(share, ex) {
+				var msg = {
+					extra: {
+						scene: ex
+					}
+				};
+				//赋值
+				shareHref = document.getElementById('shareHref').value;
+				shareTitle = document.getElementById('shareTitle').value;
+				shareContent = document.getElementById('shareContent').value;
+				//				shareThumbs = null;
+
+				msg.href = shareHref || "39.106.104.193:8999";
+				msg.title = shareTitle || "to 榕儿";
+				msg.content = shareContent || "Happy Birthday ~~~";
+				//			if(~share.id.indexOf('weibo')) {
+				//				msg.content += "；快来围观吧：http://weibo.com/u/5693239398?refer_flag=1001030201_";
+				//			}
+				msg.thumbs = ["_www/images/logo1.png"];
+				share.send(msg, function() {
+					console.log("分享到\"" + share.description + "\"成功！ ");
+				}, function(e) {
+					console.log("分享到\"" + share.description + "\"失败: " + e.code + " - " + e.message);
+				});
+			}
+		</script>
+	</body>
+
+</html>

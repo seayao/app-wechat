@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>二维码扫描结果</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<link rel="stylesheet" href="../../css/base.css" />
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			var ws = null,
+				embed = null,
+				barcode_data = null;
+			// 扩展API加载完毕，现在可以正常调用扩展API 
+			function plusReady() {
+				ws = plus.webview.currentWebview();
+				barcode_data = ws.barcode_data;
+				ws.addEventListener('show', createEmbed, false);
+			}
+			// 判断扩展API是否准备，否则监听"plusready"事件
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+			// 创建子Webview
+			function createEmbed() {
+				var topoffset = '45px';
+				if(plus.navigator.isImmersedStatusbar()) { // 兼容immersed状态栏模式
+					topoffset = (Math.round(plus.navigator.getStatusbarHeight()) + 45) + 'px';
+				}
+				plus.nativeUI.showWaiting('加 载 中 ...', {
+					style: 'white',
+					modal: false,
+					background: 'rgba(0,0,0,1)'
+				});
+				embed = plus.webview.create(barcode_data, 'embed', {
+					top: topoffset,
+					bottom: '0px',
+					position: 'dock',
+					dock: 'bottom',
+					bounce: 'vertical',
+				});
+				ws.append(embed);
+				embed.addEventListener('loaded', function() {
+					plus.nativeUI.closeWaiting();
+				}, false);
+				embed.addEventListener('loading', function() {
+					plus.nativeUI.showWaiting('加 载 中 ...', {
+						style: 'white',
+						modal: false,
+						background: 'rgba(0,0,0,1)'
+					});
+				}, false);
+			}
+			// 打开网址
+			function openUrl() {
+				embed.loadURL(barcode_data);
+			}
+			// 页面加载后自动打开
+			document.addEventListener("DOMContentLoaded", function() {
+				if(embed) {
+					openUrl();
+				} else {
+					auto = true;
+				}
+			}, false);
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back(),plus.nativeUI.closeWaiting();">
+				<span class="mui-icon mui-icon-left-nav"></span>返回
+			</button>
+			<h1 class="mui-title">扫描结果</h1>
+			<a class="mui-pull-right" style="color: #fff;" onclick="openUrl()">刷新</a>
+		</header>
+		
+	</body>
+
+</html>

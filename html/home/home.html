@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>消息</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/icons-extra.css" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/base.css" />
+		<script src="../../js/common.js"></script>
+		<script type="text/javascript">
+			var jumpUrl = null;
+
+			function scaned(t, r, f) {
+				var blist = [];
+				var d = new Date();
+				var h = d.getHours(),
+					m = d.getMinutes(),
+					s = d.getSeconds(),
+					ms = d.getMilliseconds();
+				if(h < 10) {
+					h = '0' + h;
+				}
+				if(m < 10) {
+					m = '0' + m;
+				}
+				if(s < 10) {
+					s = '0' + s;
+				}
+				if(ms < 10) {
+					ms = '00' + ms;
+				} else if(ms < 100) {
+					ms = '0' + ms;
+				}
+				var ts = '[' + h + ':' + m + ':' + s + '.' + ms + ']';
+				//				var html = '[' + h + ':' + m + ':' + s + '.' + ms + ']' + '　　' + t + '码<div class="hdata">';
+				//				html += r;
+				//				html += '</div>';
+				blist[blist.length] = {
+					time: ts,
+					type: t,
+					result: r,
+					file: f
+				};
+				update(ts, t, r, f);
+			}
+
+			function update(ts, t, r, f) {
+				if(r.indexOf('http') > -1) {
+					jumpUrl = 'barcode-result-web.html';
+				} else {
+					jumpUrl = 'barcode-result-other.html';
+				}
+				mui.openWindow({
+					url: jumpUrl,
+					id: jumpUrl,
+					extras: {
+						barcode_data: r
+					}
+				});
+			}
+		</script>
+		<style>
+			html,
+			body {
+				overflow: hidden;
+			}
+			
+			#popover.mui-bar-popover {
+				width: auto;
+				background-color: #49494b;
+				color: #fff;
+			}
+			
+			#popover.mui-popover .mui-popover-arrow:after {
+				background-color: #49494b;
+			}
+			
+			#popover.mui-popover.mui-bar-popover .mui-table-view {
+				width: auto !important;
+				background-color: #49494b;
+			}
+			
+			#popover.mui-popover .mui-table-view .mui-table-view-cell:first-child,
+			.mui-popover .mui-table-view .mui-table-view-cell:first-child>a:not(.mui-btn) {
+				border-top-left-radius: 7px;
+				border-top-right-radius: 7px;
+			}
+			
+			#popover.mui-popover .mui-table-view .mui-table-view-cell:last-child,
+			.mui-popover .mui-table-view .mui-table-view-cell:last-child>a:not(.mui-btn) {
+				border-bottom-right-radius: 7px;
+				border-bottom-left-radius: 7px;
+			}
+			
+			#popover.mui-bar-popover .mui-tab-item .mui-icon {
+				vertical-align: middle;
+				margin-right: 5px;
+			}
+			
+			.mui-content {
+				background-color: #fff;
+			}
+			
+			.search-box {
+				padding: 10px 10px 0;
+				background-color: #efeff4;
+			}
+			
+			.search-box input {
+				background-color: #fff;
+			}
+						
+			#dataList.mui-table-view .mui-media-object {
+				max-width: 45px !important;
+				width: 45px !important;
+				height: 45px !important;
+				border-radius: 4px !important;
+			}
+			
+			#dataList.mui-table-view .oa-contact-name {
+				color: #333;
+			}
+			
+			#dataList.mui-table-view .oa-contact-time {
+				color: #b2b2b2;
+				font-size: 12px;
+			}
+			
+			/*平滑删除示例*/			
+			.seayao {
+				-webkit-animation: seayao-remove .4s ease-in-out;
+				animation: seayao-remove .4s ease-in-out;
+			}
+			
+			@keyframes seayao-remove {
+				0% {
+					opacity: 1;
+					-webkit-transform: translateY(0);
+					transform: rotate(0deg);
+				}				
+				100% {
+					opacity: 0;
+					-webkit-transform: translateY(-71px);
+					transform: translateY(-71px);
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">消息</h1>
+			<a href="#popover" class="mui-icon mui-icon-plusempty mui-pull-right" style="color: #fff;"></a>
+		</header>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--搜索框-->
+				<div class="search-box">
+					<div class="mui-input-row mui-search">
+						<input id="search-box-input" type="search" class="mui-input-speech mui-input-clear" placeholder="搜索，支持语音输入">
+					</div>
+				</div>
+				<!--数据列表-->
+				<ul id="dataList" class="mui-table-view">
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-slider-right mui-disabled">
+							<a class="mui-btn mui-btn-grey">标为未读</a>
+							<a class="delete-btn mui-btn mui-btn-red">删除</a>
+						</div>
+						<div class="mui-slider-handle mui-clearfix">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" src="../../images/60x60.gif">
+								<div class="mui-media-body">
+									<div class="mui-clearfix">
+										<h4 class="oa-contact-name mui-pull-left">姚海洋</h4>
+										<span class="oa-contact-time mui-pull-right">2017/11/03</span>
+									</div>
+									<p class='mui-ellipsis'>[该条数据为默认渲染]</p>
+								</div>
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<!--功能选择弹出框-->
+		<div id="popover" class="mui-popover mui-bar-popover">
+			<div class="mui-popover-arrow"></div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a class="mui-tab-item" href="#">
+						<span class="mui-icon mui-icon-chatbubble"></span>
+						<span class="mui-tab-label">发起群聊</span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-tab-item" href="#">
+						<span class="mui-icon mui-icon-personadd"></span>
+						<span class="mui-tab-label">添加朋友</span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-tab-item" onclick="clicked('barcode-scan.html',true,true)">
+						<span class="mui-icon mui-icon-extra mui-icon-extra-sweep"></span>
+						<span class="mui-tab-label">扫一扫</span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-tab-item" href="#">
+						<span class="mui-icon mui-icon-extra mui-icon-extra-alipay"></span>
+						<span class="mui-tab-label">收付款</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script>
+			mui.init({
+				//swipeBack: true,
+				pullRefresh: {
+					container: '#refreshContainer',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				setTimeout(function() {
+					var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+					for(var i = cells.length, len = i + 3; i < len; i++) {
+						var li = document.createElement('li');
+						li.className = 'mui-table-view-cell';
+						var newStr = '';
+						newStr = '<div class="mui-slider-right mui-disabled">';
+						newStr += '<a class="mui-btn mui-btn-grey">标为未读</a>';
+						newStr += '<a class="delete-btn mui-btn mui-btn-red">删除</a>';
+						newStr += '</div>';
+						newStr += '<div class="mui-slider-handle mui-clearfix">';
+						newStr += '<a href="javascript:;">';
+						newStr += '	<img class="mui-media-object mui-pull-left" src="../../images/yhy.png" />';
+						newStr += '<div class="mui-media-body">';
+						newStr += '<div class="mui-clearfix">';
+						newStr += '<h4 class="oa-contact-name mui-pull-left">姚海洋 ' + (i + 1) + '</h4>';
+						newStr += '<span class="oa-contact-time mui-pull-right">' + (i + 1) + '分钟前</span>';
+						newStr += '</div>';
+						newStr += '<p class="mui-ellipsis">遇见你很高兴</p>';
+						newStr += '</div>';
+						newStr += '</a>';
+						newStr += '</div>';
+						li.innerHTML = newStr;
+						//下拉刷新，新纪录插到最前面；
+						table.insertBefore(li, table.firstChild);
+					}
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh(); //refresh completed
+				}, 400);
+			}
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > 5)); //参数为true代表没有更多数据了。
+					var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+					for(var i = cells.length, len = i + 3; i < len; i++) {
+						var li = document.createElement('li');
+						li.className = 'mui-table-view-cell';
+						var newStr = '';
+						newStr = '<div class="mui-slider-right mui-disabled">';
+						newStr += '<a class="mui-btn mui-btn-grey">标为未读</a>';
+						newStr += '<a class="delete-btn mui-btn mui-btn-red">删除</a>';
+						newStr += '</div>';
+						newStr += '<div class="mui-slider-handle mui-clearfix">';
+						newStr += '<a href="javascript:;">';
+						newStr += '	<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg" />';
+						newStr += '<div class="mui-media-body">';
+						newStr += '<div class="mui-clearfix">';
+						newStr += '<h4 class="oa-contact-name mui-pull-left">姚海洋' + (i - 1) + '</h4>';
+						newStr += '<span class="oa-contact-time mui-pull-right">' + (i - 1) + '分钟前</span>';
+						newStr += '</div>';
+						newStr += '<p class="mui-ellipsis">遇见你很高兴</p>';
+						newStr += '</div>';
+						newStr += '</a>';
+						newStr += '</div>';
+						li.innerHTML = newStr;
+						table.appendChild(li);
+					}
+				}, 400);
+			}
+
+			mui.plusReady(function() {
+
+			});
+
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#refreshContainer').pullRefresh().pullupLoading();
+					}, 400);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#refreshContainer').pullRefresh().pullupLoading();
+				});
+			}
+
+			//删除消息列表
+			mui('#dataList').on('tap', '.delete-btn', function() {
+				var elem = this;
+				var li = elem.parentNode.parentNode;
+				var btnArray = [{
+					title: "删除",
+					style: "destructive"
+				}];
+				plus.nativeUI.actionSheet({
+					title: "删除后，将清空该聊天的消息记录",
+					cancel: "取消",
+					buttons: btnArray
+				}, function(e) {
+					var index = e.index;
+					switch(index) {
+						case 0:
+							setTimeout(function() {
+								mui.swipeoutClose(li);
+							}, 0);
+							break;
+						case 1:
+							li.classList.add('seayao');
+							setTimeout(function() {
+								li.parentNode.removeChild(li);
+							}, 300);
+							break;
+					}
+				});
+			});
+
+			//关闭弹出菜单
+			mui('#popover').on('tap', '.mui-table-view-cell', function() {
+				mui('#popover').popover('hide');
+			});
+
+			//预加载聊天窗口页面
+			//			mui.preload({
+			//				url: '../chat/chat.html',
+			//				id: 'chat',
+			//				createNew: true,
+			//				show: {
+			//					autoShow: true, //页面loaded事件发生后自动显示，默认为true
+			//					aniShow: "slide-in-right" //页面显示动画，默认为”slide-in-right“；							
+			//				}
+			//			});
+
+			//加载聊天窗口页面
+			mui('#dataList').on('tap', '.mui-table-view-cell', function() {
+				var nickname = this.querySelector('.oa-contact-name').innerText;
+				mui.openWindow({
+					url: '../chat/chat.html',
+					id: 'chat',
+					extras: {
+						nickname: nickname
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

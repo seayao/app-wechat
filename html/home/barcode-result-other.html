@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>二维码扫描结果</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<link rel="stylesheet" href="../../css/base.css" />
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script>
+			var ws = null,
+				barcode_data = null,
+				t = null;
+
+			function plusReady() {
+				ws = plus.webview.currentWebview();
+				barcode_data = ws.barcode_data;
+			}
+
+			// 判断扩展API是否准备，否则监听"plusready"事件
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+
+			showScanResult();
+
+			//显示扫描结果
+			function showScanResult() {
+				plus.nativeUI.showWaiting('加 载 中 ...', {
+					style: 'white',
+					modal: false,
+					background: 'rgba(0,0,0,1)'
+				});
+				if(t) {
+					clearTimeout(t);
+				}
+				t = setTimeout(function() {
+					document.querySelector('#scanShow').innerHTML = barcode_data;
+					plus.nativeUI.closeWaiting();
+				}, 400);
+			}
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back(),plus.nativeUI.closeWaiting();">
+				<span class="mui-icon mui-icon-left-nav"></span>返回
+			</button>
+			<h1 class="mui-title">扫描结果</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<p id="scanShow"></p>
+			</div>
+		</div>
+	</body>
+
+</html>

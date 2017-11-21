@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>发现</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/icons-extra.css" />
+		<link rel="stylesheet" href="../../css/base.css" />
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript">
+			var jumpUrl = null;
+			
+			function scaned(t, r, f) {
+				var blist = [];
+				var d = new Date();
+				var h = d.getHours(),
+					m = d.getMinutes(),
+					s = d.getSeconds(),
+					ms = d.getMilliseconds();
+				if(h < 10) {
+					h = '0' + h;
+				}
+				if(m < 10) {
+					m = '0' + m;
+				}
+				if(s < 10) {
+					s = '0' + s;
+				}
+				if(ms < 10) {
+					ms = '00' + ms;
+				} else if(ms < 100) {
+					ms = '0' + ms;
+				}
+				var ts = '[' + h + ':' + m + ':' + s + '.' + ms + ']';
+				//				var html = '[' + h + ':' + m + ':' + s + '.' + ms + ']' + '　　' + t + '码<div class="hdata">';
+				//				html += r;
+				//				html += '</div>';
+				blist[blist.length] = {
+					time: ts,
+					type: t,
+					result: r,
+					file: f
+				};
+				update(ts, t, r, f);
+			}
+			
+			function update(ts, t, r, f) {
+				if(r.indexOf('http') > -1) {
+					jumpUrl = '../home/barcode-result-web.html';
+				} else {
+					jumpUrl = '../home/barcode-result-other.html';
+				}
+				mui.openWindow({
+					url: jumpUrl,
+					id: jumpUrl,
+					extras: {
+						barcode_data: r
+					}
+				});
+			}
+		</script>
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.head-img {
+				max-width: 60px !important;
+				width: 60px !important;
+				height: 60px !important;
+				border-radius: 4px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">发现</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 15px;">
+					<li class="mui-table-view-cell" onclick="clicked('pengyouquan.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-pengyouquan" style="color: #dd5044;"></span>
+							<span style="margin-left: 10px;">朋友圈</span>
+						</a>
+					</li>
+				</ul>
+
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
+					<li class="mui-table-view-cell" onclick="clicked('../home/barcode-scan.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon-extra mui-icon-extra-sweep" style="color: #ffce44;"></span>
+							<span style="margin-left: 10px;">扫一扫</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" onclick="clicked('shake.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon-extra mui-icon-extra-holiday" style="color: #10abff;"></span>
+							<span style="margin-left: 10px;">摇一摇</span>
+						</a>
+					</li>
+				</ul>
+
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
+					<li class="mui-table-view-cell" onclick="clicked('maps.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-map" style="color: #1da362;"></span>
+							<span style="margin-left: 10px;">地图</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" onclick="clicked('compass.html',false)">
+							<span class="mui-icon mui-icon-navigate" style="color: #dd5044;"></span>
+							<span style="margin-left: 10px;">指南针</span>
+						</a>
+					</li>
+				</ul>
+				
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
+					<li class="mui-table-view-cell" onclick="clicked('audio.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-mic" style="color:  #4c8bf5;"></span>
+							<span style="margin-left: 10px;">录音</span>
+						</a>
+					</li>
+				</ul>
+				
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
+					<li class="mui-table-view-cell" onclick="clicked('../mini-programs/mini-programs.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-paperclip" style="color: #ffce44;"></span>
+							<span style="margin-left: 10px;">小程序</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script>
+		mui.init({
+			//swipeBack: true //启用右滑关闭功能
+		});
+
+		mui('.mui-scroll-wrapper').scroll();
+	</script>
+
+</html>

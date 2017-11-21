@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title>地图</title>
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<link rel="stylesheet" href="../../css/base.css" />
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript">
+			var ws = null,
+				wo = null;
+			var em = null,
+				map = null;
+			// H5 plus事件处理
+			function plusReady() {
+				if(!em || ws) {
+					return
+				};
+				// 获取窗口对象
+				ws = plus.webview.currentWebview();
+				wo = ws.opener();
+				setTimeout(function() {
+					map = new plus.maps.Map("map");
+					userLocation();
+					map.setZoom(14);
+					map.showZoomControls(true);
+				}, 300);
+				// 显示页面并关闭等待框
+				ws.show("pop-in");
+			}
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+			// DOMContentloaded事件处理
+			document.addEventListener("DOMContentLoaded", function() {
+				em = document.getElementById("map");
+				window.plus && plusReady();
+			}, false);
+
+			function userLocation() {
+				map.showUserLocation(true);
+				map.getUserLocation(function(state, pos) {
+					if(0 == state) {
+						map.setCenter(pos);
+					}
+				});
+			}
+
+			//重置地图
+			function resetMap() {
+				map.reset();
+			}
+		</script>
+		<style type="text/css">
+			#map {
+				width: 100%;
+				position: fixed;
+				top: 44px;
+				bottom: 44px;
+				line-height: 200px;
+				text-align: center;
+				background-color: #efeff4;
+			}
+			
+			footer {
+				width: 100%;
+				height: 44px;
+				position: absolute;
+				bottom: 0px;
+				line-height: 44px;
+				text-align: center;
+				background-color: #fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back()">
+				<span class="mui-icon mui-icon-left-nav"></span>发现
+			</button>
+			<h1 class="mui-title">地图</h1>
+			<a id="moreBtn" class="mui-icon mui-icon-bars mui-pull-right" style="color: #fff;"></a>
+		</header>
+		<div class="mui-content">
+			<div id="map">地图加载中...</div>
+			<footer>
+				<a onclick="userLocation()">
+					<span class="mui-icon mui-icon-location"></span>
+					<span>我的位置</span>
+				</a>
+			</footer>
+		</div>
+		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			//功能选择
+			mui('#header').on('tap', '#moreBtn', function() {
+				var btnArray = [{
+						title: "打开地图"
+					}, {
+						title: "打开高德地图"
+					},
+					{
+						title: "打开百度地图"
+					}
+				];
+				plus.nativeUI.actionSheet({
+					title: "功能选择",
+					cancel: "取消",
+					buttons: btnArray
+				}, function(e) {
+					var index = e.index;
+					switch(index) {
+						case 0:
+							break;
+						case 1:
+							openMap();
+							break;
+						case 2:
+							openAMap();
+							break;
+						case 3:
+							openBMap();
+							break;
+						default:
+							userLocation();
+							break;
+					}
+				});
+			});
+
+			function androidMarket(pname) {
+				plus.runtime.openURL("market://details?id=" + pname);
+			}
+
+			function iosAppstore(url) {
+				plus.runtime.openURL("itms-apps://" + url);
+			}
+
+			//打开手机自带的地图
+			function openMap() {
+				var url = "";
+				switch(plus.os.name) {
+					case "Android":
+						url = "geo:39.96310,116.340698?q=%e6%95%b0%e5%ad%97%e5%a4%a9%e5%a0%82";
+						break;
+					case "iOS":
+						url = "http://maps.apple.com/?q=%e6%95%b0%e5%ad%97%e5%a4%a9%e5%a0%82&ll=39.96310,116.340698&spn=0.008766,0.019441";
+						break;
+					default:
+						return;
+						break;
+				}
+				plus.runtime.openURL(url, function(e) {
+					plus.nativeUI.alert("检查到您未安装地图程序\n");
+				});
+			}
+
+			//打开高德地图
+			function openAMap() {
+				var url = null,
+					id = null,
+					f = null;
+				switch(plus.os.name) {
+					case "Android":
+						// 规范参考官方网站：http://lbs.amap.com/api/uri-api/android-uri-explain/
+						url = "androidamap://viewMap?sourceApplication=HelloH5&poiname=DCloud&lat=39.9631018208&lon=116.3406135236&dev=0";
+						f = androidMarket;
+						id = "com.autonavi.minimap";
+						break;
+					case "iOS":
+						// 规范参考官方网站：http://lbs.amap.com/api/uri-api/ios-uri-explain/
+						url = "iosamap://viewMap?sourceApplication=HelloH5&poiname=DCloud&lat=39.9631018208&lon=116.3406135236&dev=0";
+						f = iosAppstore;
+						id = "itunes.apple.com/cn/app/gao-tu-zhuan-ye-dao-hang-ban/id461703208?mt=8";
+						break;
+					default:
+						return;
+						break;
+				}
+				plus.runtime.openURL(url, function(e) {
+					plus.nativeUI.confirm("检查到您未安装\"高德地图\"，是否到商城搜索下载？", function(i) {
+						if(i.index == 0) {
+							f(id);
+						}
+					});
+				}, id);
+			}
+
+			//打开百度地图
+			function openBMap() {
+				var url = null,
+					id = null,
+					f = null;
+				switch(plus.os.name) {
+					case "Android":
+						// 规范参考官方网站：http://developer.baidu.com/map/index.php?title=uri/api/android
+						url = "baidumap://map/marker?location=39.968789,116.347247&title=DCloud&content=%e6%89%93%e9%80%a0HTML5%e6%9c%80%e5%a5%bd%e7%9a%84%e7%a7%bb%e5%8a%a8%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7&src=HelloH5";
+						f = androidMarket;
+						id = "com.baidu.BaiduMap";
+						break;
+					case "iOS":
+						// 规范参考官方网站：http://developer.baidu.com/map/index.php?title=uri/api/ios
+						url = "baidumap://map/marker?location=39.968789,116.347247&title=DCloud&content=%e6%89%93%e9%80%a0HTML5%e6%9c%80%e5%a5%bd%e7%9a%84%e7%a7%bb%e5%8a%a8%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7&src=HelloH5";
+						f = iosAppstore;
+						id = "itunes.apple.com/cn/app/bai-du-de-tu-yu-yin-dao-hang/id452186370?mt=8";
+						break;
+					default:
+						return;
+						break;
+				}
+				plus.runtime.openURL(url, function(e) {
+					plus.nativeUI.confirm("检查到您未安装\"百度地图\"，是否到商城搜索下载？", function(i) {
+						if(i.index == 0) {
+							f(id);
+						}
+					});
+				});
+			}
+		</script>
+	</body>
+
+</html>

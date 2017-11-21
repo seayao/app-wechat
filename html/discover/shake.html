@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title>摇一摇</title>
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript">
+			var p = null;
+			var MAX = 36;
+			var up = null,
+				down = null,
+				offset = 50;
+			var t = null,
+				t2 = null,
+				volume = null,
+				shakeType = null,
+				volumeType = null;
+			// H5 plus事件处理
+			function plusReady() {
+				shakeType = 1;
+				volumeType = true;
+				// 锁定只能竖屏显示
+				plus.screen.lockOrientation('portrait-primary');
+				// 监听加速度
+				plus.accelerometer.watchAcceleration(function(a) {
+					if(!up) {
+						return;
+					}
+					if(!p && (Math.abs(a.xAxis) + Math.abs(a.yAxis) + Math.abs(a.zAxis) > MAX)) {
+						document.querySelector('.resultArea').style.display = 'none';
+						//设置是否静音
+						if(volumeType) {
+							volume = plus.device.getVolume();
+						} else {
+							volume = 0;
+						}						
+						if(volume > 0) {
+							// Play audio
+							p = plus.audio.createPlayer('_www/audio/shake.wav');
+							p.play();
+							setTimeout(function() {
+								// Stop play audio
+								p.stop();
+								delete p;
+								p = null;
+							}, 2000)
+						} else {
+							deviceVibrate();
+						}
+						// Animation
+						offset = up.offsetHeight / 2;
+						up.style.webkitTransform = 'translateY(-' + offset + 'px)';
+						up.style.msTransform = 'translateY(-' + offset + 'px)';
+						down.style.webkitTransform = 'translateY(' + offset + 'px)';
+						down.style.msTransform = 'translateY(' + offset + 'px)';
+						//清除定时器
+						if(t) {
+							clearTimeout(t);
+						}
+						t = setTimeout(function() {
+							t = null;
+							up.style.webkitTransform = '';
+							up.style.msTransform = '';
+							down.style.webkitTransform = '';
+							down.style.msTransform = '';
+							//根据选择的不同类型展示不同的结果
+							showDiffResult(shakeType);
+						}, 1000);
+					}
+				}, function(e) {
+					//outSet('Watch failed: '+e.message);
+				}, {
+					frequency: 100
+				});
+			}
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener('plusready', plusReady, false);
+			}
+			// 监听DOMContentLoaded事件
+			document.addEventListener('DOMContentLoaded', function() {
+				up = document.getElementById('up');
+				down = document.getElementById('down');
+				offset = up.offsetHeight / 2;
+			}, false);
+			// 解锁并关闭
+			var _back = window.back;
+
+			function unlockback() {
+				plus.screen.unlockOrientation();
+				_back();
+			}
+			window.back = unlockback;
+
+			//设置是否静音
+			function switchVolume() {
+				volumeType = !volumeType;
+				if(volumeType) {
+					document.getElementById('switchBtn').style.color = '#fff';
+				} else {
+					document.getElementById('switchBtn').style.color = '#666';
+				}
+			}
+
+			//设备震动
+			function deviceVibrate() {
+				switch(plus.os.name) {
+					case "iOS":
+						if(plus.device.model.indexOf("iPhone") >= 0) {
+							plus.device.vibrate(500);
+						} else {
+							plus.nativeUI.alert("此设备不支持振动");
+						}
+						break;
+					default:
+						plus.device.vibrate(500);
+						break;
+				}
+			}
+
+			//根据选择类型展示不同的结果
+			function showDiffResult(type) {
+				plus.nativeUI.showWaiting('加 载 中 ...', {
+					style: 'white',
+					modal: false,
+					background: 'rgba(0,0,0,1)'
+				});
+				if(t2) {
+					clearTimeout(t2);
+				}
+				t2 = setTimeout(function() {
+					switch(type) {
+						case 1:
+							specialPeople();
+							break;
+						case 2:
+							plus.nativeUI.alert("暂不支持此功能");
+							break;
+						case 3:
+							scissors();
+							break;
+						default:
+							specialPeople();
+							break;
+					}
+					plus.nativeUI.closeWaiting();
+				}, 600);
+			}
+
+			//人
+			function specialPeople() {
+				var randomNumber = String(new Date().getTime()).slice(-3);
+				document.querySelector('.resultArea').style.display = 'block';
+				document.querySelector('#gameWrap').src = '../../images/ronger.jpg';
+				document.querySelector('.distance-info').innerHTML = '相距' + randomNumber + '公里';
+			}
+
+			//剪刀石头布游戏
+			function scissors() {
+				var n1 = 1,
+					n2 = 3;
+				var randomNumber = Math.round(n1 + Math.random() * (n2 - n1));
+				document.querySelector('.resultArea').style.display = 'block';
+				document.querySelector('#gameWrap').src = '../../images/shake/game/scissors' + randomNumber + '.png';
+			}
+		</script>
+		<link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+		<style type="text/css">
+			.content-wrap {
+				width: 100%;
+				height: 90%;
+				position: relative;
+				text-align: center;
+				background: center center no-repeat url('../../images/shake/shakebg.jpg');
+				overflow: hidden;
+			}
+			
+			.content-wrap .up,
+			.content-wrap .down {
+				width: 100%;
+				height: 50%;
+				background: #2d3132;
+				-webkit-transition: all .5s ease-in-out;
+				-ms-transition: all .5s ease-in-out;
+			}
+			
+			.resultArea {
+				display: none;
+				width: 80%;
+				height: auto;
+				margin: 0 10%;
+				padding: 10px;
+				position: absolute;
+				bottom: 25px;
+				background-color: #3a3b3d;
+				color: #c2c3c5;
+				border-radius: 6px;
+				border: 1px solid #292a2c;
+				overflow: hidden;
+			}
+			
+			.resultArea .head-img-wrap {
+				margin-right: 15px;
+			}
+			
+			.resultArea .head-img-wrap .head-img {
+				width: 60px;
+				height: 60px;
+				border-radius: 4px;
+			}
+			
+			.resultArea .person-info {
+				width: auto;
+				margin-top: 6px;
+				overflow: hidden;
+			}
+			
+			.resultArea .person-info .person-name-wrap .person-name {
+				display: inline-block;
+				font-size: 20px;
+				margin-bottom: 8px;
+			}
+			
+			.resultArea .person-info .distance-info {
+				color: #c2c3c5;
+				font-size: 16px;
+			}
+			
+			footer {
+				width: 100%;
+				height: 10%;
+				background-color: #2d3132;
+			}
+			
+			footer .mui-bar.mui-bar-tab {
+				background-color: #2d3132;
+			}
+			
+			footer .mui-bar-tab .mui-tab-item {
+				height: inherit;
+				color: #fff;
+				font-weight: 700 !important;
+			}
+			
+			footer .mui-bar-tab .mui-tab-item.mui-active {
+				color: #18af14;
+			}
+			
+			footer .mui-bar-tab .mui-tab-item span.mui-tab-label {
+				font-size: 14px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back()">
+				<span class="mui-icon mui-icon-left-nav"></span>发现
+			</button>
+			<h1 class="mui-title">摇一摇</h1>
+			<button id="switchBtn" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right" onclick="switchVolume()" style="color: #fff;">
+				<span class="mui-icon-extra mui-icon-extra-notice"></span>
+			</button>
+		</header>
+		<div class="content-wrap">
+			<div id="up" class="up">
+				<img style="height:100%;" src="../../images/shake/shakeup.png" />
+			</div>
+			<div id="down" class="down">
+				<img style="height:100%;" src="../../images/shake/shakedown.png" />
+			</div>
+
+			<!--结果显示区域-->
+			<div id="resultArea" class="resultArea mui-clearfix">
+				<div class="mui-pull-left head-img-wrap">
+					<img id="gameWrap" class="head-img" src="../../images/ronger.jpg" />
+				</div>
+				<div class="mui-pull-left mui-text-left person-info">
+					<div class="person-name-wrap mui-clearfix">
+						<span class="person-name mui-ellipsis">春夏秋冬</span>
+					</div>
+					<p class="distance-info mui-ellipsis">相距1111公里</p>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<nav class="mui-bar mui-bar-tab" style="height: 10%;">
+				<a id="defaultTab" class="mui-tab-item mui-active" data-type="1">
+					<span class="mui-icon mui-icon-person"></span>
+					<span class="mui-tab-label">人</span>
+				</a>
+				<a class="mui-tab-item" data-type="2">
+					<span class="mui-icon mui-icon-mic"></span>
+					<span class="mui-tab-label">音频</span>
+				</a>
+				<a class="mui-tab-item" data-type="3">
+					<span class="mui-icon mui-icon-extra mui-icon-extra-grech"></span>
+					<span class="mui-tab-label">游戏</span>
+				</a>
+			</nav>
+		</footer>
+
+		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			//底部选项卡点击事件
+			mui('.mui-bar-tab').on('tap', 'a', function(e) {
+				shakeType = Number(this.getAttribute('data-type'));
+				var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+				if(current !== this) {
+					document.querySelector('.resultArea').style.display = 'none';
+				}
+			});
+		</script>
+	</body>
+
+</html>

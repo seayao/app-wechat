@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>我</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/icons-extra.css" />
+		<link rel="stylesheet" href="../../css/base.css" />
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.head-img {
+				max-width: 60px !important;
+				width: 60px !important;
+				height: 60px !important;
+				border-radius: 4px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">我</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 15px;">
+					<li class="mui-table-view-cell mui-media">
+						<a class="mui-navigate-right" href="#">
+							<img class="mui-media-object mui-pull-left head-img" src="../../images/yhy.png">
+							<div class="mui-media-body">
+								<span style="margin-top: 5px;display: block;">姚海洋</span>
+								<p class="mui-ellipsis" style="margin-top: 5px;">人不知而不愠</p>
+							</div>
+						</a>
+					</li>
+				</ul>
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-extra mui-icon-extra-gold" style="color: #ffce44;"></span>
+							<span style="margin-left: 10px;">钱包</span>
+						</a>
+					</li>
+				</ul>
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-extra mui-icon-extra-heart-filled" style="color: #dd5044;"></span>
+							<span style="margin-left: 10px;">收藏</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-image" style="color: #4c8bf5;"></span>
+							<span style="margin-left: 10px;">相册</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-extra mui-icon-extra-card" style="color: #1da362;"></span>
+							<span style="margin-left: 10px;">卡包</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-qq" style="color: #10abff;"></span>
+							<span style="margin-left: 10px;">表情</span>
+						</a>
+					</li>
+				</ul>
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
+					<li class="mui-table-view-cell" onclick="clicked('setting.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-gear" style="color: #dd5044;"></span>
+							<span style="margin-left: 10px;">设置</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script>
+		mui.init();
+		mui('.mui-scroll-wrapper').scroll();
+	</script>
+
+</html>
