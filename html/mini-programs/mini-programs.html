@@ -17,11 +17,28 @@
 				background-color: #efeff4;
 			}
 			
-			.head-img {
-				max-width: 60px !important;
-				width: 60px !important;
-				height: 60px !important;
-				border-radius: 4px;
+			.mui-content {
+				background-color: #fff;
+			}
+			
+			.search-box {
+				padding: 10px 10px 0;
+				background-color: #efeff4;
+			}
+			
+			.search-box input {
+				background-color: #fff;
+			}
+			
+			.mui-table-view-cell .icon-item {
+				margin-right: 0 !important;
+				line-height: 48px;
+				max-width: 48px;
+				height: 48px;
+			}
+			
+			.mui-table-view-cell .mui-media-body {
+				padding: inherit;
 			}
 		</style>
 	</head>
@@ -35,26 +52,35 @@
 		</header>
 		<div class="mui-content mui-scroll-wrapper">
 			<div class="mui-scroll">
-				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 15px;">
-					<li class="mui-table-view-cell" onclick="clicked('program-vConsole.html',false)">
+				<!--搜索框-->
+				<div class="search-box">
+					<div class="mui-input-row mui-search">
+						<input id="search-box-input" type="search" class="mui-input-clear" placeholder="搜索">
+					</div>
+				</div>
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell mui-media" onclick="clicked('program-vConsole.html',false)">
 						<a class="mui-navigate-right">
-							<span class="mui-icon-extra mui-icon-extra-computer" style="color: #dd5044;"></span>
-							<span style="margin-left: 10px;">vConsole</span>
+							<img class="mui-media-object mui-pull-left icon-item" src="../../images/mini-programs/icon1.png">
+							<div class="mui-media-body">
+								vConsole
+							</div>
 						</a>
 					</li>
-				</ul>
-
-				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
-					<li class="mui-table-view-cell" onclick="clicked('program-date.html',false)">
-						<a class="mui-navigate-right">
-							<span class="mui-icon-extra mui-icon-extra-calendar" style="color: #ffce44;"></span>
-							<span style="margin-left: 10px;">日期计算</span>
+					<li class="mui-table-view-cell mui-media" onclick="clicked('program-date.html',false)">
+						<a class="mui-navigate-right" href="javascript:;">
+							<img class="mui-media-object mui-pull-left icon-item" src="../../images/mini-programs/icon2.png">
+							<div class="mui-media-body">
+								日期计算
+							</div>
 						</a>
 					</li>
-					<li class="mui-table-view-cell" onclick="clicked('program-date.html',false)">
+					<li class="mui-table-view-cell mui-media" onclick="clicked('program-vConsole.html',false)">
 						<a class="mui-navigate-right">
-							<span class="mui-icon-extra mui-icon-extra-calendar" style="color: #ffce44;"></span>
-							<span style="margin-left: 10px;">日期计算</span>
+							<img class="mui-media-object mui-pull-left icon-item" src="../../images/mini-programs/icon3.png">
+							<div class="mui-media-body">
+								待定
+							</div>
 						</a>
 					</li>
 				</ul>

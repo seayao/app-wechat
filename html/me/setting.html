@@ -234,7 +234,7 @@
 							</li>
 						</ul>
 						<ul class="mui-table-view">
-							<li class="mui-table-view-cell" onclick="clicked('../../locker.html',true)" style="text-align: center;color: #dd524d;">
+							<li class="mui-table-view-cell" onclick="logOut()" style="text-align: center;color: #dd524d;">
 								<a>退出登录</a>
 							</li>
 						</ul>
@@ -585,7 +585,7 @@
 					</div>
 				</div>
 			</div>
-		</div>				
+		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
@@ -599,7 +599,7 @@
 		});
 		//初始化单页的区域滚动
 		mui('.mui-scroll-wrapper').scroll();
-		
+
 		var timer = null,
 			calcSize = 0;
 		//计算并清理缓存
@@ -746,6 +746,18 @@
 
 		if(mui.os.stream) {
 			document.getElementById("check_update").display = "none";
+		}
+
+		//退出登录
+		function logOut() {
+			var btnArray = ['取消', '退出'];
+			mui.confirm('确定要退出登录吗？', 'WeChat', btnArray, function(e) {
+				if(e.index == 1) {
+					clicked('../../locker.html',true);
+				} else {
+					//取消操作
+				}
+			});
 		}
 	</script>
 
