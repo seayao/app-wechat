@@ -30,7 +30,7 @@ function formatDate(pattern) {
 }
 
 //计算天数差的函数 
-function dateDiff(strDateStart, strDateEnd) {//日期格式是：2017-11-20
+function dateDiff(strDateStart, strDateEnd) { //日期格式是：2017-11-20
 	var strSeparator = "-"; //日期分隔符
 	var oDate1;
 	var oDate2;
@@ -41,4 +41,23 @@ function dateDiff(strDateStart, strDateEnd) {//日期格式是：2017-11-20
 	var strDateE = new Date(oDate2[0], oDate2[1] - 1, oDate2[2]);
 	iDays = parseInt(Math.abs(strDateS - strDateE) / 1000 / 60 / 60 / 24) //把相差的毫秒数转换为天数 
 	return iDays;
+}
+
+//获取当前日期多n天,val可以为负数
+function calcDate(strDateStart, val) { //strDateStart 格式：2017-08-17
+	if(!strDateStart || !val) {
+		return;
+	}
+	var weekArray = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+	var strSeparator = "-"; //日期分隔符	
+	var p_y = parseInt(strDateStart.split(strSeparator)[0]);
+	var p_m = parseInt(strDateStart.split(strSeparator)[1]) - 1;
+	var p_d = parseInt(strDateStart.split(strSeparator)[2]) + parseInt(val);
+	var p_date = new Date(p_y, p_m, p_d);
+	var m_y = p_date.getFullYear();
+	var m_m = p_date.getMonth() + 1;
+	var m_d = p_date.getDate();
+	console.log(p_date)
+	var week = weekArray[p_date.getDay()];
+	return m_y + "-" + m_m + "-" + m_d + " " + week;
 }

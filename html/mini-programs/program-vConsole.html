@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>vConsole</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<link rel="stylesheet" href="../../css/base.css" />
+		<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../plugins/vConsole/vconsole.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back()">
+				<span class="mui-icon mui-icon-left-nav"></span>小程序
+			</button>
+			<h1 class="mui-title">vConsole</h1>
+		</header>
+		<script type="text/javascript">			
+			window.vConsole = new window.VConsole({
+				defaultPlugins: ['system', 'network', 'element', 'storage'], // 可以在此设定要默认加载的面板
+				maxLogNumber: 1000
+			});
+		</script>
+	</body>
+
+</html>

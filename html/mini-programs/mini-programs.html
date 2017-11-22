@@ -2,195 +2,72 @@
 <html>
 
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta name="HandheldFriendly" content="true" />
-		<meta name="MobileOptimized" content="320" />
+		<meta charset="utf-8">
 		<title>小程序</title>
-		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/icons-extra.css" />
 		<link rel="stylesheet" href="../../css/base.css" />
-		<link rel="stylesheet" href="../../css/common.css" />
 		<script type="text/javascript" src="../../js/common.js"></script>
-		<script src="../../js/base.js" type="text/javascript" charset="utf-8"></script>
 		<style>
-			.btn-handle {
-				padding: 10px 12px;
+			html,
+			body {
+				background-color: #efeff4;
 			}
 			
-			.res-show {
-				width: 100%;
-				height: auto;
-				background-color: transparent;
-			}
-			
-			.res-show-alert-circle {
-				display: none;
-				width: 80px;
-				height: 80px;
-				margin: 35px auto 0;
-				border-radius: 50%;
-				text-align: center;
-				line-height: 80px;
-				font-size: 35px;
-				color: #fff;
-				background-color: rgba(0, 0, 0, 0.5);
-				z-index: 20;
-				-webkit-transition: .2s;
-				transition: .2s;
-			}
-			
-			.res-show-alert-circle.active {
-				display: block;
-			}
-			
-			.res-show-alert-rect {
-				display: none;
-				width: 200px;
-				height: 50px;
-				margin: 35px auto 0;
-				border-radius: 5px;
-				text-align: center;
-				font-size: 20px;
-				line-height: 50px;
-				color: #fff;
-				background-color: rgba(0, 0, 0, 0.5);
-				z-index: 20;
-				-webkit-transition: .2s;
-				transition: .2s;
-			}
-			
-			.res-show-alert-rect.active {
-				display: block;
+			.head-img {
+				max-width: 60px !important;
+				width: 60px !important;
+				height: 60px !important;
+				border-radius: 4px;
 			}
 		</style>
 	</head>
 
 	<body>
-		<header id="header" class="mui-bar mui-bar-nav">
+		<header class="mui-bar mui-bar-nav">
 			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back()">
 				<span class="mui-icon mui-icon-left-nav"></span>发现
 			</button>
 			<h1 class="mui-title">小程序</h1>
 		</header>
-		<div class="mui-content">
-			<div class="mui-content-padded">
-				<!--开始日期-->
-				<div>
-					<h5 class="mui-content-padded">开始日期</h5>
-					<button id="startDateBtn" type="button" class="btn-handle mui-btn mui-btn-primary mui-btn-block">选择开始日期</button>
-				</div>
-				<!--结束日期-->
-				<div>
-					<h5 class="mui-content-padded">结束日期</h5>
-					<button id="endDateBtn" type="button" class="btn-handle mui-btn mui-btn-warning mui-btn-block">选择结束日期</button>
-				</div>
-				<!--日期推算-->
-				<div>
-					<h5 class="mui-content-padded">推算几天前或几天后的日期</h5>
-					<div class="mui-numbox" data-numbox-step='10'>
-						<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-						<input id="box" class="mui-input-numbox" type="number" />
-						<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-					</div>
-				</div>
-				<!--按钮操作-->
-				<div style="margin-top: 20px;">
-					<button id="calcDateDiff" type="button" class="btn-handle mui-btn mui-btn-block">计算天数差</button>
-					<button id="dateCalc" type="button" class="btn-handle mui-btn mui-btn-block">推算日期</button>
-				</div>
-				<!--结果显示-->
-				<div class="res-show">
-					<div id="resShow1" class="res-show-alert-circle"></div>
-					<div id="resShow2" class="res-show-alert-rect"></div>
-				</div>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 15px;">
+					<li class="mui-table-view-cell" onclick="clicked('program-vConsole.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon-extra mui-icon-extra-computer" style="color: #dd5044;"></span>
+							<span style="margin-left: 10px;">vConsole</span>
+						</a>
+					</li>
+				</ul>
+
+				<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 20px;">
+					<li class="mui-table-view-cell" onclick="clicked('program-date.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon-extra mui-icon-extra-calendar" style="color: #ffce44;"></span>
+							<span style="margin-left: 10px;">日期计算</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" onclick="clicked('program-date.html',false)">
+						<a class="mui-navigate-right">
+							<span class="mui-icon-extra mui-icon-extra-calendar" style="color: #ffce44;"></span>
+							<span style="margin-left: 10px;">日期计算</span>
+						</a>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<script src="../../js/mui.min.js"></script>
-		<script>
-			//mui初始化
-			mui.init({
-				swipeBack: true //启用右滑关闭功能
-			});
-			
-			var resShow1 = document.getElementById("resShow1");
-			var resShow2 = document.getElementById("resShow2");
-
-			//获取当前时间
-			var nowDate = formatDate();
-
-			//选择开始日期
-			document.getElementById("startDateBtn").addEventListener('tap', function() {
-				var that = this;
-				resShow1.classList.remove('active');
-				resShow2.classList.remove('active');
-				var dDate = new Date();
-				dDate.setFullYear(nowDate);
-				var minDate = new Date();
-				minDate.setFullYear(1900, 0, 1);
-				var maxDate = new Date();
-				maxDate.setFullYear(2099, 11, 31);
-				plus.nativeUI.pickDate(function(e) {
-					var d = e.date;
-					that.innerText = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-				}, function(e) {
-					that.innerText = "选择开始日期";
-				}, {
-					title: "请选择日期",
-					date: dDate,
-					minDate: minDate,
-					maxDate: maxDate
-				});
-			});
-
-			//选择结束日期
-			document.getElementById("endDateBtn").addEventListener('tap', function() {
-				var that = this;
-				resShow1.classList.remove('active');
-				resShow2.classList.remove('active');
-				var dDate = new Date();
-				dDate.setFullYear(nowDate);
-				var minDate = new Date();
-				minDate.setFullYear(1900, 0, 1);
-				var maxDate = new Date();
-				maxDate.setFullYear(2099, 11, 31);
-				plus.nativeUI.pickDate(function(e) {
-					var d = e.date;
-					that.innerText = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-				}, function(e) {
-					that.innerText = "选择结束日期";
-				}, {
-					title: "请选择日期",
-					date: dDate,
-					minDate: minDate,
-					maxDate: maxDate
-				});
-			});
-
-			//计算日期差
-			document.getElementById("calcDateDiff").addEventListener('tap', function() {
-				resShow2.classList.remove('active');
-				var startDate = document.getElementById("startDateBtn").innerText;
-				var endDate = document.getElementById("endDateBtn").innerText;
-				if(startDate == '选择开始日期' || endDate == '选择结束日期') {
-					mui.toast('请完善日期信息');
-				} else {
-					resShow1.classList.add('active');
-					resShow1.innerText = dateDiff(startDate, endDate);
-				}
-			});
-			
-			//日期推算
-			document.getElementById("dateCalc").addEventListener('tap', function() {
-				resShow1.classList.remove('active');
-				var startDate = document.getElementById("startDateBtn").innerText;			
-				if(startDate == '选择开始日期') {
-					mui.toast('选择开始日期');
-				} else {
-					resShow2.classList.add('active');
-					resShow2.innerText = '正在开发中';
-				}
-			});
-		</script>
 	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script>
+		mui.init({
+			//swipeBack: true //启用右滑关闭功能
+		});
+
+		mui('.mui-scroll-wrapper').scroll();
+	</script>
 
 </html>

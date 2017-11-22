@@ -11,12 +11,80 @@
 		<link rel="stylesheet" type="text/css" href="../../css/base.css" />
 		<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
-			.mui-input-group {
-				margin-bottom: 20px;
+			.share-wrap input,
+			.share-wrap textarea {
+				border: none !important;
+				margin-bottom: 0;
 			}
-								
-			.btn-handle-wrap{
-				
+			
+			.share-wrap .mui-inline {
+				vertical-align: bottom;
+				font-size: 14px;
+				color: #8f8f94;
+			}
+			
+			.mui-popover {
+				height: 180px;
+			}
+			
+			.btn-handle-wrap {
+				margin-top: 5px;
+			}
+			/*上传logo样式*/
+			
+			.logo-wrap {
+				width: 100%;
+				height: 85px;
+				padding: 10px;
+				background-color: #fff;
+				background-size: cover;
+				text-align: center;
+				overflow: hidden;
+			}
+			
+			.share-wrap .image-item {
+				width: 65px;
+				height: 65px;
+				background-size: 100% 100%;
+				display: inline-block;
+				position: relative;
+				border-radius: 5px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+				border: solid 1px #e8e8e8;
+				vertical-align: top;
+			}
+			
+			.share-wrap .image-item .file {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+				cursor: pointer;
+				z-index: 0;
+			}
+			
+			.share-wrap .image-item.space {
+				border: none;
+			}
+			
+			.share-wrap .image-item .image-up {
+				height: 65px;
+				width: 65px;
+				border-radius: 10px;
+				line-height: 65px;
+				border: 1px solid #ccc;
+				color: #ccc;
+				display: inline-block;
+				text-align: center;
+			}
+			
+			.share-wrap .image-item .image-up:after {
+				font-family: "微软雅黑";
+				content: '+';
+				font-size: 60px;
 			}
 		</style>
 	</head>
@@ -29,43 +97,73 @@
 			<h1 class="mui-title">分享与推荐</h1>
 			<a id="share" class="mui-pull-right mui-icon mui-icon-redo" style="color: #fff;"></a>
 		</header>
-		<div class="mui-content">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div class="mui-scroll">
-					<div class="">
-						<p>logo</p>
-						<img src="../../images/logo1.png" alt="logo" />
-					</div>
-
-					<form class="mui-input-group">
-						<div class="mui-input-row">
-							<label>网址</label>
-							<input id="shareHref" type="text" class="mui-input-speech mui-input-clear" placeholder="请输入网址">
-						</div>
-					</form>
-
-					<form class="mui-input-group">
-						<div class="mui-input-row">
-							<label>标题</label>
-							<input id="shareTitle" type="text" class="mui-input-speech mui-input-clear" placeholder="请输入标题">
-						</div>
-					</form>
-
-					<div style="position: relative;">
-						<div class="mui-input-row">
-							<textarea id="shareContent" class="shareContent" rows="5" placeholder="请输入内容"></textarea>
-						</div>
-
-						<!--按钮操作-->
-						<div class="btn-handle-wrap mui-text-center">
-							<button type="button" class="mui-btn" onclick="celarContent()">清空内容</button>
-							<button type="button" class="mui-btn mui-btn-success" onclick="startRecognize()">语音输入</button>
-						</div>
-					</div>
-
+		<div class="mui-content share-wrap">
+			<!--分享logo-->
+			<div class="">
+				<div class="mui-content-padded">
+					<div class="mui-inline">logo</div>
+				</div>
+				<div id="logoWrap" class="logo-wrap"></div>
+				<!--<img src="../../images/logo1.png" alt="logo" />-->
+			</div>
+			<!--分享网址-->
+			<div>
+				<div class="mui-content-padded">
+					<div class="mui-inline">网址</div>
+				</div>
+				<div class="mui-input-row">
+					<input id="shareHref" type="text" class="mui-input-clear" placeholder="请输入网址">
 				</div>
 			</div>
-
+			<!--分享标题-->
+			<div>
+				<div class="mui-content-padded">
+					<div class="mui-inline">标题</div>
+				</div>
+				<div class="mui-input-row">
+					<input id="shareTitle" type="text" class="mui-input-clear" placeholder="请输入标题">
+				</div>
+			</div>
+			<!--分享内容-->
+			<div>
+				<div class="mui-content-padded mui-clearfix">
+					<div class="mui-inline">内容</div>
+					<a class="mui-pull-right mui-inline" href="#popover">
+						快捷输入
+						<span class="mui-icon mui-icon-arrowdown"></span>
+					</a>
+					<!--快捷输入具体内容，开发者可自己替换常用语-->
+					<div id="popover" class="mui-popover">
+						<div class="mui-popover-arrow"></div>
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<li class="mui-table-view-cell">
+										<a href="#">快来围观吧。</a>
+									</li>
+									<li class="mui-table-view-cell">
+										<a href="#">我去买几个橘子，你就在此地，不要走动。</a>
+									</li>
+									<li class="mui-table-view-cell">
+										<a href="#">我用舒肤佳洗过手了，可以摸一下你的jb吗？</a>
+									</li>
+									<li class="mui-table-view-cell">
+										<a href="#">UI无法直视，丑哭了。</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<textarea id="shareContent" class="shareContent" rows="5" placeholder="请输入内容，支持语音输入"></textarea>
+				</div>
+				<!--按钮操作-->
+				<div class="btn-handle-wrap mui-text-center">
+					<button type="button" class="mui-btn" onclick="celarContent()">清空内容</button>
+					<button type="button" class="mui-btn mui-btn-success" onclick="startRecognize()">语音输入</button>
+				</div>
+			</div>
 		</div>
 		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 		<script>
@@ -178,20 +276,92 @@
 				shareTitle = document.getElementById('shareTitle').value;
 				shareContent = document.getElementById('shareContent').value;
 				//				shareThumbs = null;
-
-				msg.href = shareHref || "39.106.104.193:8999";
+				msg.href = shareHref || "http://www.seayao121.com:800";
 				msg.title = shareTitle || "to 榕儿";
-				msg.content = shareContent || "Happy Birthday ~~~";
+				msg.content = shareContent || "Happy ~~~";
 				//			if(~share.id.indexOf('weibo')) {
 				//				msg.content += "；快来围观吧：http://weibo.com/u/5693239398?refer_flag=1001030201_";
-				//			}
-				msg.thumbs = ["_www/images/logo1.png"];
+				//			}	
+				if(files.length == 1) {
+					msg.thumbs = files;
+				} else {
+					msg.thumbs = ["_www/images/logo1.png"];
+				}
 				share.send(msg, function() {
 					console.log("分享到\"" + share.description + "\"成功！ ");
 				}, function(e) {
 					console.log("分享到\"" + share.description + "\"失败: " + e.code + " - " + e.message);
 				});
 			}
+
+			//选择快捷输入
+			mui('.mui-popover').on('tap', 'li', function(e) {
+				text.value = text.value + this.children[0].innerText;
+				mui('.mui-popover').popover('toggle');
+			})
+
+			//上传logo
+			var files = [];
+			var logoWrap = document.getElementById('logoWrap');
+
+			//获取所有文件上传按钮
+			function getFileInputArray() {
+				return [].slice.call(logoWrap.querySelectorAll('.file'));
+			};
+
+			//初始化图片域占位
+			function newPlaceholder() {
+				var fileInputArray = getFileInputArray();
+				if(fileInputArray &&
+					fileInputArray.length > 0 &&
+					fileInputArray[fileInputArray.length - 1].parentNode.classList.contains('space')) {
+					return;
+				};
+				var placeholder = document.createElement('div');
+				placeholder.setAttribute('class', 'image-item space');
+				var up = document.createElement('div');
+				up.setAttribute('class', 'image-up')
+				//初始化上传组件
+				var fileInput = document.createElement('div');
+				fileInput.setAttribute('class', 'file');
+				fileInput.setAttribute('id', 'image');
+				fileInput.addEventListener('tap', function(event) {
+					var self = this;
+					//var index = (this.id).substr(-1);
+					//相册选取照片
+					plus.gallery.pick(function(e) {
+						//console.log("event:"+e);
+						files = [];
+						var size = null;
+						var name = e.substr(e.lastIndexOf('/') + 1);
+						console.log("name:" + name);
+						plus.zip.compressImage({
+							src: e,
+							dst: '_doc/images/thumbs' + name,
+							overwrite: true,
+							quality: 50
+						}, function(zip) {
+							size = zip.size;
+							console.log("filesize:" + zip.size + ",totalsize:" + size);
+							if(size > (1 * 1024 * 1024)) { //1M
+								return mui.toast('文件超过1M，请重新选择');
+							}
+							up.classList.remove('image-up');
+							placeholder.style.backgroundImage = 'url(' + zip.target + ')';
+							files.push(zip.target);
+							//							console.log('666',files.length);
+						}, function(zipe) {
+							mui.toast('压缩失败！')
+						});
+					}, function(e) {
+						mui.toast(e.message);
+					}, {});
+				}, false);
+				placeholder.appendChild(up);
+				placeholder.appendChild(fileInput);
+				logoWrap.appendChild(placeholder);
+			};
+			newPlaceholder();
 		</script>
 	</body>
 
