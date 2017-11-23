@@ -32,11 +32,11 @@
 			.mui-indexed-list {
 				background-color: #efeff4;
 			}
-						
-			.mui-list-bar-wrap{
+			
+			.mui-list-bar-wrap {
 				position: relative;
 			}
-					
+			
 			.mui-table-view-cell .mui-slider-handle .mui-media-object {
 				max-width: 36px;
 				width: 36px;
@@ -72,7 +72,7 @@
 				<div class="mui-indexed-list-alert"></div>
 				<div class="mui-indexed-list-inner">
 					<div class="mui-indexed-list-empty-alert">没有数据</div>
-					<ul class="mui-table-view">
+					<ul id="contactList" class="mui-table-view">
 						<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>
 						<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item">
 							<div class="mui-slider-right mui-disabled">
@@ -423,6 +423,8 @@
 		<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/mui.indexedlist.js"></script>
 		<script type="text/javascript" charset="utf-8">
+			//详情页webview
+			var webview_detail = null;
 			mui.init({
 				//swipeBack: true //启用右滑关闭功能
 			});
@@ -434,10 +436,29 @@
 				//create
 				window.indexedList = new mui.IndexedList(list);
 			});
-			
-			mui('.mui-table-view').on('tap','.mui-table-view-cell',function(){
-				clicked('contact-profile.html',false);
+
+			//预加载详情窗口页面
+			webview_detail = mui.preload({
+				url: 'contact-profile.html',
+				id: 'contact_profile'
 			});
+
+			//加载详情窗口页面
+			mui('#contactList').on('tap', '.mui-table-view-cell', function() {
+				var nickname = this.querySelector('.contact-name').innerText;
+				//触发子窗口展开详情页面
+				mui.fire(webview_detail, 'get_detail', {
+					nickname: nickname
+				});
+				//动画打开
+				setTimeout(function() {
+					webview_detail.show("slide-in-right", 300);
+				}, 150);
+			});
+
+			//			mui('.mui-table-view').on('tap','.mui-table-view-cell',function(){
+			//				clicked('contact-profile.html',false);
+			//			});
 		</script>
 	</body>
 

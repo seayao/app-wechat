@@ -92,76 +92,79 @@
 	<body>
 		<header id="header" class="mui-bar mui-bar-nav">
 			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back()">
-				<span class="mui-icon mui-icon-left-nav"></span>关于
+				<span class="mui-icon mui-icon-left-nav"></span>返回
 			</button>
 			<h1 class="mui-title">分享与推荐</h1>
 			<a id="share" class="mui-pull-right mui-icon mui-icon-redo" style="color: #fff;"></a>
 		</header>
-		<div class="mui-content share-wrap">
-			<!--分享logo-->
-			<div class="">
-				<div class="mui-content-padded">
-					<div class="mui-inline">logo</div>
+		<div class="mui-content mui-scroll-wrapper share-wrap" style="padding-bottom: 8px;">
+			<div class="mui-scroll">
+				<!--分享logo-->
+				<div class="">
+					<div class="mui-content-padded">
+						<div class="mui-inline">logo</div>
+					</div>
+					<div id="logoWrap" class="logo-wrap"></div>
+					<!--<img src="../../images/logo1.png" alt="logo" />-->
 				</div>
-				<div id="logoWrap" class="logo-wrap"></div>
-				<!--<img src="../../images/logo1.png" alt="logo" />-->
-			</div>
-			<!--分享网址-->
-			<div>
-				<div class="mui-content-padded">
-					<div class="mui-inline">网址</div>
-				</div>
-				<div class="mui-input-row">
-					<input id="shareHref" type="text" class="mui-input-clear" placeholder="请输入网址">
-				</div>
-			</div>
-			<!--分享标题-->
-			<div>
-				<div class="mui-content-padded">
-					<div class="mui-inline">标题</div>
-				</div>
-				<div class="mui-input-row">
-					<input id="shareTitle" type="text" class="mui-input-clear" placeholder="请输入标题">
-				</div>
-			</div>
-			<!--分享内容-->
-			<div>
-				<div class="mui-content-padded mui-clearfix">
-					<div class="mui-inline">内容</div>
-					<a class="mui-pull-right mui-inline" href="#popover">
-						快捷输入
-						<span class="mui-icon mui-icon-arrowdown"></span>
-					</a>
-					<!--快捷输入具体内容，开发者可自己替换常用语-->
-					<div id="popover" class="mui-popover">
-						<div class="mui-popover-arrow"></div>
-						<div class="mui-scroll-wrapper">
-							<div class="mui-scroll">
-								<ul class="mui-table-view">
-									<li class="mui-table-view-cell">
-										<a href="#">快来围观吧。</a>
-									</li>
-									<li class="mui-table-view-cell">
-										<a href="#">我去买几个橘子，你就在此地，不要走动。</a>
-									</li>
-									<li class="mui-table-view-cell">
-										<a href="#">我用舒肤佳洗过手了，可以摸一下你的jb吗？</a>
-									</li>
-									<li class="mui-table-view-cell">
-										<a href="#">UI无法直视，丑哭了。</a>
-									</li>
-								</ul>
-							</div>
-						</div>
+				<!--分享网址-->
+				<div>
+					<div class="mui-content-padded">
+						<div class="mui-inline">网址</div>
+					</div>
+					<div class="mui-input-row">
+						<input id="shareHref" type="text" class="mui-input-clear" placeholder="请输入网址">
 					</div>
 				</div>
-				<div class="mui-input-row">
-					<textarea id="shareContent" class="shareContent" rows="5" placeholder="请输入内容，支持语音输入"></textarea>
+				<!--分享标题-->
+				<div>
+					<div class="mui-content-padded">
+						<div class="mui-inline">标题</div>
+					</div>
+					<div class="mui-input-row">
+						<input id="shareTitle" type="text" class="mui-input-clear" placeholder="请输入标题">
+					</div>
 				</div>
-				<!--按钮操作-->
-				<div class="btn-handle-wrap mui-text-center">
-					<button type="button" class="mui-btn" onclick="celarContent()">清空内容</button>
-					<button type="button" class="mui-btn mui-btn-success" onclick="startRecognize()">语音输入</button>
+				<!--分享内容-->
+				<div>
+					<div class="mui-content-padded mui-clearfix">
+						<div class="mui-inline">内容</div>
+						<a class="mui-pull-right mui-inline" href="#popover">
+							快捷输入
+							<span class="mui-icon mui-icon-arrowdown"></span>
+						</a>
+
+					</div>
+					<div class="mui-input-row">
+						<textarea id="shareContent" class="shareContent" rows="5" placeholder="请输入内容，支持语音输入"></textarea>
+					</div>
+					<!--按钮操作-->
+					<div class="btn-handle-wrap mui-text-center">
+						<button type="button" class="mui-btn" onclick="celarContent()">清空内容</button>
+						<button type="button" class="mui-btn mui-btn-success" onclick="startRecognize()">语音输入</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--快捷输入具体内容，开发者可自己替换常用语-->
+		<div id="popover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<a href="#">快来围观吧。</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a href="#">我去买几个橘子，你就在此地，不要走动。</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a href="#">我用舒肤佳洗过手了，可以摸一下你的jb吗？</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a href="#">幸睹伊颜，奈何擦肩。</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

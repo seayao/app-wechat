@@ -1,3 +1,10 @@
+//本地测试
+var chatServer = 'http://localhost:8080';
+
+//线上测试
+//var chatServer = 'http://localhost:8080';
+
+
 function formatDate(pattern) {
 	var returnValue = pattern || "yyyy-MM-dd HH:mm:ss";
 	var format = {

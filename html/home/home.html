@@ -154,6 +154,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-redo mui-pull-left" onclick="clicked('../me/share.html',false);" style="color: transparent !important;"></a>
 			<h1 id="title" class="mui-title">消息</h1>
 			<a href="#popover" class="mui-icon mui-icon-plus mui-pull-right" style="color: #fff;"></a>
 		</header>
@@ -221,6 +222,8 @@
 		</div>
 		<script src="../../js/mui.min.js"></script>
 		<script>
+			//聊天页webview
+			var webview_chat = null;
 			mui.init({
 				//swipeBack: true,
 				pullRefresh: {
@@ -356,30 +359,24 @@
 				mui('#popover').popover('hide');
 			});
 
-			//预加载聊天窗口页面
-			//			mui.preload({
-			//				url: '../chat/chat.html',
-			//				id: 'chat',
-			//				createNew: true,
-			//				show: {
-			//					autoShow: true, //页面loaded事件发生后自动显示，默认为true
-			//					aniShow: "slide-in-right" //页面显示动画，默认为”slide-in-right“；							
-			//				}
-			//			});
+			//预加载聊天窗口页面（因为聊天页面内容不刷新，暂定）
+			webview_chat = mui.preload({
+				url: '../chat/chat.html',
+				id: 'chat'
+			});
 
 			//加载聊天窗口页面
 			mui('#dataList').on('tap', '.mui-table-view-cell', function() {
 				var nickname = this.querySelector('.oa-contact-name').innerText;
-				mui.openWindow({
-					url: '../chat/chat.html',
-					id: 'chat',
-					extras: {
-						nickname: nickname
-					},
-					waiting: {
-						autoShow: false
-					}
+				//触发子窗口展开聊天
+				mui.fire(webview_chat, 'get_chat', {
+					iconText: '消息',
+					nickname: nickname
 				});
+				//加载聊天窗口页面
+				setTimeout(function() {
+					webview_chat.show("slide-in-right", 300);
+				}, 150);
 			});
 		</script>
 	</body>

@@ -348,9 +348,9 @@
 	<body contextmenu="return false;">
 		<header class="mui-bar mui-bar-nav">
 			<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
-				<span class="mui-icon mui-icon-left-nav"></span>消息
+				<span class="mui-icon mui-icon-left-nav"></span><span id="iconText">返回</span>
 			</button>
-			<h1 id="nackname" class="mui-title">昵称</h1>
+			<h1 id="nickname" class="mui-title">昵称</h1>
 		</header>
 		<pre id='h'></pre>
 		<script id='msg-template' type="text/template">
@@ -369,7 +369,7 @@
 						<% if(item.type=='text' ) { %>
 						<%=( item.content|| '&nbsp;&nbsp;') %>
 						<% } else if(item.type=='image' ) { %>
-						<img class="msg-content-image" src="<%=(item.content)%>" style="max-width: 100px;" data-preview-src="" data-preview-group="1"/>
+						<img class="msg-content-image" src="<%=(item.content)%>" style="max-width: 100px;" data-preview-src="" data-preview-group="1" />
 						<% } else if(item.type=='sound' ) { %>
 						<span class="mui-icon mui-icon-mic" style="font-size: 18px;font-weight: bold;"></span>
 						<span class="play-state">点击播放</span>
@@ -406,10 +406,28 @@
 		<!--<script src="../../js/mui.imageViewer.js"></script>-->
 		<script src="../../js/mui.zoom.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/mui.previewimage.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/arttmpl.js"></script>		
+		<script src="../../js/arttmpl.js"></script>
+		<script src="../../plugins/socket.io/socket.io.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/base.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
 			(function($, doc) {
+				//监听自定义事件，获取用户信息
+				document.addEventListener('get_chat', function(event) {
+					var iconText = event.detail.iconText;
+					var nickname = event.detail.nickname;
+					if(!nickname) {
+						return;
+					}
+					document.querySelector('#iconText').innerText = iconText;
+					document.querySelector('#nickname').innerText = nickname;
+				});
+
+				//socket.io配置
+				var socket = io(chatServer);
+				//触发加入聊天事件
+				socket.emit('join');
+				
+				//聊天初始化
 				var MIN_SOUND_TIME = 800;
 				$.init({
 					gestureConfig: {
@@ -425,9 +443,6 @@
 				template.config('escape', false);
 				//$.plusReady=function(fn){fn();};
 				$.plusReady(function() {
-					var ws = plus.webview.currentWebview();
-					document.querySelector('#nackname').innerText = ws.nickname;
-
 					plus.webview.currentWebview().setStyle({
 						softinputMode: "adjustResize"
 					});
@@ -451,7 +466,7 @@
 					var record = [{
 						sender: 'zs',
 						type: 'text',
-						content: 'Hi，很高兴见到你！',
+						content: '聊天窗口预加载有一个BUG待修复，页面未更新！',
 						time: formatDate()
 					}];
 					var ui = {
@@ -485,9 +500,9 @@
 							});
 						}
 					};
-//					var imageViewer = new $.ImageViewer('.msg-content-image', {
-//						dbl: false
-//					});
+					//					var imageViewer = new $.ImageViewer('.msg-content-image', {
+					//						dbl: false
+					//					});
 
 					var bindMsgList = function() {
 						//绑定数据:
@@ -507,35 +522,59 @@
 						});
 						//初始化图片查看器
 						$.previewImage();
-//						imageViewer.findAllImage();
+						//						imageViewer.findAllImage();
 						ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
 					};
 					bindMsgList();
 					window.addEventListener('resize', function() {
 						ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
 					}, false);
+
+					//监听信息接收
+					socket.on("receive", function(data, fn) {
+						var receiveMsg = {
+							sender: 'zs',
+							type: 'text',
+							content: data.text,
+							time: formatDate()
+
+							//							id: '',
+							//							sender: data.senderName,
+							//							avatar: data.senderAvatar,
+							//							self: localStorage.account,
+							//							type: data.contType,
+							//							content: data.mailCont
+						};
+						record.push(receiveMsg);
+						bindMsgList();
+					});
+
+					//消息发送
 					var send = function(msg) {
 						record.push(msg);
+						socket.emit('toOne', msg);
 						bindMsgList();
-						toRobot(msg.content);
+						
+						//toRobot(msg.content);
 					};
-					var toRobot = function(info) {
-						var apiUrl = 'http://www.tuling123.com/openapi/api';
-						$.getJSON(apiUrl, {
-							"key": 'acfbca724ea1b5db96d2eef88ce677dc',
-							"info": info,
-							"userid": plus.device.uuid
-						}, function(data) {
-							//alert(JSON.stringify(data));
-							record.push({
-								sender: 'zs',
-								type: 'text',
-								content: data.text,
-								time: formatDate()
-							});
-							bindMsgList();
-						});
-					};
+					//图灵机器人聊天
+					//					var toRobot = function(info) {
+					//						var apiUrl = 'http://www.tuling123.com/openapi/api';
+					//						$.getJSON(apiUrl, {
+					//							"key": 'acfbca724ea1b5db96d2eef88ce677dc',
+					//							"info": info,
+					//							"userid": plus.device.uuid
+					//						}, function(data) {
+					//							//alert(JSON.stringify(data));
+					//							record.push({
+					//								sender: 'zs',
+					//								type: 'text',
+					//								content: data.text,
+					//								time: formatDate()
+					//							});
+					//							bindMsgList();
+					//						});
+					//					};
 
 					function msgTextFocus() {
 						ui.boxMsgText.focus();

@@ -10,7 +10,6 @@
 		<link rel="stylesheet" href="../../css/mui.min.css">
 		<link rel="stylesheet" href="../../css/previewimage.css" />
 		<link rel="stylesheet" href="../../css/base.css" />
-		<script type="text/javascript" src="../../js/common.js"></script>
 		<style>
 			html,
 			body {
@@ -41,7 +40,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="back()">
+			<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
 				<span class="mui-icon mui-icon-left-nav"></span>通讯录
 			</button>
 			<h1 id="title" class="mui-title">详细资料</h1>
@@ -54,7 +53,7 @@
 						<a class="" style="background-color: transparent;">
 							<img class="mui-media-object mui-pull-left head-img" src="../../images/yhy.png" data-preview-src="" data-preview-group="1">
 							<div class="mui-media-body">
-								<span style="display: block;margin-bottom: 2px;">姚海洋</span>
+								<span id="nickname" style="display: block;margin-bottom: 2px;">姚海洋</span>
 								<p class="mui-ellipsis" style="font-size: 12px;">微信号: wxid_0b0jtw26jz9a21</p>
 								<p class="mui-ellipsis" style="font-size: 12px;">昵称: 春夏秋冬</p>
 							</div>
@@ -96,7 +95,7 @@
 
 				<!--按钮操作-->
 				<div style="margin-top: 20px;">
-					<button type="button" class="btn-handle mui-btn mui-btn-success mui-btn-block">发消息</button>
+					<button id="sendMsg" type="button" class="btn-handle mui-btn mui-btn-success mui-btn-block">发消息</button>
 					<button type="button" class="btn-handle mui-btn mui-btn-block">视频聊天</button>
 				</div>
 			</div>
@@ -111,6 +110,38 @@
 
 		//初始化图片查看器
 		mui.previewImage();
+
+		//监听自定义事件，获取用户信息
+		document.addEventListener('get_detail', function(event) {
+			var nickname = event.detail.nickname;
+			if(!nickname) {
+				return;
+			}
+			document.querySelector('#nickname').innerText = nickname;
+		});
+
+		//聊天页webview
+		var webview_chat = null;
+
+		//预加载聊天窗口页面（因为聊天页面内容不刷新，暂定）
+		webview_chat = mui.openWindow({
+			url: '../chat/chat.html',
+			id: 'chat'
+		});
+
+		//加载聊天窗口页面
+		document.getElementById('sendMsg').addEventListener('tap', function() {
+			var nickname = document.querySelector('#nickname').innerText;
+			//触发子窗口展开聊天
+			mui.fire(webview_chat, 'get_chat', {
+				iconText:'详细资料',
+				nickname: nickname
+			});
+			//加载聊天窗口页面
+			setTimeout(function() {
+				webview_chat.show("slide-in-right", 300);
+			}, 150);
+		});
 	</script>
 
 </html>
