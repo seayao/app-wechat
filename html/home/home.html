@@ -130,18 +130,18 @@
 				color: #b2b2b2;
 				font-size: 12px;
 			}
-			/*平滑删除示例*/
 			
+			/*平滑删除示例*/			
 			.seayao {
 				-webkit-animation: seayao-remove .4s ease-in-out;
-				animation: seayao-remove .4s ease-in-out;
+				animation: seayao-remove .4s ease-in-out;		
 			}
 			
 			@keyframes seayao-remove {
 				0% {
 					opacity: 1;
 					-webkit-transform: translateY(0);
-					transform: rotate(0deg);
+					transform: translateY(0);
 				}
 				100% {
 					opacity: 0;
@@ -221,7 +221,12 @@
 			</ul>
 		</div>
 		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/socket.io/socket.io.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/base.js" type="text/javascript" charset="utf-8"></script>
 		<script>
+			//socket.io配置
+			var socket = io(chatServer);
+
 			//聊天页webview
 			var webview_chat = null;
 			mui.init({
@@ -270,7 +275,9 @@
 						table.insertBefore(li, table.firstChild);
 					}
 					mui('#refreshContainer').pullRefresh().endPulldownToRefresh(); //refresh completed
-				}, 400);
+					//刷新音效
+					refreshSound();
+				}, 600);
 			}
 			var count = 0;
 			/**
@@ -308,15 +315,18 @@
 			}
 
 			mui.plusReady(function() {
-
+				//预加载聊天窗口页面（因为聊天页面内容不刷新，暂定）
+				webview_chat = mui.preload({
+					url: '../chat/chat.html',
+					id: 'chat'
+				});
 			});
 
 			if(mui.os.plus) {
 				mui.plusReady(function() {
 					setTimeout(function() {
 						mui('#refreshContainer').pullRefresh().pullupLoading();
-					}, 400);
-
+					}, 600);
 				});
 			} else {
 				mui.ready(function() {
@@ -359,12 +369,6 @@
 				mui('#popover').popover('hide');
 			});
 
-			//预加载聊天窗口页面（因为聊天页面内容不刷新，暂定）
-			webview_chat = mui.preload({
-				url: '../chat/chat.html',
-				id: 'chat'
-			});
-
 			//加载聊天窗口页面
 			mui('#dataList').on('tap', '.mui-table-view-cell', function() {
 				var nickname = this.querySelector('.oa-contact-name').innerText;
@@ -375,7 +379,7 @@
 				});
 				//加载聊天窗口页面
 				setTimeout(function() {
-					webview_chat.show("slide-in-right", 300);
+					webview_detail.show("slide-in-right", 300);
 				}, 150);
 			});
 		</script>

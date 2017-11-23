@@ -4,7 +4,24 @@ var chatServer = 'http://localhost:8080';
 //线上测试
 //var chatServer = 'http://localhost:8080';
 
+//刷新音效
+function refreshSound() {
+	var p = null,
+		volume = plus.device.getVolume();
+	if(volume > 0) {
+		// Play audio
+		p = plus.audio.createPlayer('_www/audio/refresh.mp3');
+		p.play();
+		setTimeout(function() {
+			// Stop play audio
+			p.stop();
+			delete p;
+			p = null;
+		}, 1200)
+	}
+}
 
+//当前时间格式化
 function formatDate(pattern) {
 	var returnValue = pattern || "yyyy-MM-dd HH:mm:ss";
 	var format = {

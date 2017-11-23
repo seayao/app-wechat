@@ -421,11 +421,6 @@
 					document.querySelector('#iconText').innerText = iconText;
 					document.querySelector('#nickname').innerText = nickname;
 				});
-
-				//socket.io配置
-				var socket = io(chatServer);
-				//触发加入聊天事件
-				socket.emit('join');
 				
 				//聊天初始化
 				var MIN_SOUND_TIME = 800;
@@ -531,28 +526,28 @@
 					}, false);
 
 					//监听信息接收
-					socket.on("receive", function(data, fn) {
-						var receiveMsg = {
-							sender: 'zs',
-							type: 'text',
-							content: data.text,
-							time: formatDate()
-
-							//							id: '',
-							//							sender: data.senderName,
-							//							avatar: data.senderAvatar,
-							//							self: localStorage.account,
-							//							type: data.contType,
-							//							content: data.mailCont
-						};
-						record.push(receiveMsg);
-						bindMsgList();
-					});
+//					socket.on("receive", function(data, fn) {
+//						var receiveMsg = {
+//							sender: 'zs',
+//							type: 'text',
+//							content: data.text,
+//							time: formatDate()
+//
+//							//							id: '',
+//							//							sender: data.senderName,
+//							//							avatar: data.senderAvatar,
+//							//							self: localStorage.account,
+//							//							type: data.contType,
+//							//							content: data.mailCont
+//						};
+//						record.push(receiveMsg);
+//						bindMsgList();
+//					});
 
 					//消息发送
 					var send = function(msg) {
 						record.push(msg);
-						socket.emit('toOne', msg);
+//						socket.emit('toOne', msg);
 						bindMsgList();
 						
 						//toRobot(msg.content);
