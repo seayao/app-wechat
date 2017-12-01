@@ -130,11 +130,11 @@
 				color: #b2b2b2;
 				font-size: 12px;
 			}
+			/*平滑删除示例*/
 			
-			/*平滑删除示例*/			
 			.seayao {
 				-webkit-animation: seayao-remove .4s ease-in-out;
-				animation: seayao-remove .4s ease-in-out;		
+				animation: seayao-remove .4s ease-in-out;
 			}
 			
 			@keyframes seayao-remove {
@@ -168,7 +168,7 @@
 				</div>
 				<!--数据列表-->
 				<ul id="dataList" class="mui-table-view">
-					<li class="mui-table-view-cell mui-media">
+					<!--<li class="mui-table-view-cell mui-media">
 						<div class="mui-slider-right mui-disabled">
 							<a class="mui-btn mui-btn-grey">标为未读</a>
 							<a class="delete-btn mui-btn mui-btn-red">删除</a>
@@ -185,7 +185,7 @@
 								</div>
 							</a>
 						</div>
-					</li>
+					</li>-->
 				</ul>
 			</div>
 		</div>
@@ -223,10 +223,9 @@
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../plugins/socket.io/socket.io.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../chat/socketio-client.js" type="text/javascript" charset="utf-8"></script>
 		<script>
-			//socket.io配置
-			var socket = io(chatServer);
-
+			var userList = null;
 			//聊天页webview
 			var webview_chat = null;
 			mui.init({
@@ -248,78 +247,83 @@
 			 */
 			function pulldownRefresh() {
 				setTimeout(function() {
-					var table = document.body.querySelector('.mui-table-view');
-					var cells = document.body.querySelectorAll('.mui-table-view-cell');
-					for(var i = cells.length, len = i + 3; i < len; i++) {
-						var li = document.createElement('li');
-						li.className = 'mui-table-view-cell';
-						var newStr = '';
-						newStr = '<div class="mui-slider-right mui-disabled">';
-						newStr += '<a class="mui-btn mui-btn-grey">标为未读</a>';
-						newStr += '<a class="delete-btn mui-btn mui-btn-red">删除</a>';
-						newStr += '</div>';
-						newStr += '<div class="mui-slider-handle mui-clearfix">';
-						newStr += '<a href="javascript:;">';
-						newStr += '	<img class="mui-media-object mui-pull-left" src="../../images/yhy.png" />';
-						newStr += '<div class="mui-media-body">';
-						newStr += '<div class="mui-clearfix">';
-						newStr += '<h4 class="oa-contact-name mui-pull-left">姚海洋 ' + (i + 1) + '</h4>';
-						newStr += '<span class="oa-contact-time mui-pull-right">' + (i + 1) + '分钟前</span>';
-						newStr += '</div>';
-						newStr += '<p class="mui-ellipsis">遇见你很高兴</p>';
-						newStr += '</div>';
-						newStr += '</a>';
-						newStr += '</div>';
-						li.innerHTML = newStr;
-						//下拉刷新，新纪录插到最前面；
-						table.insertBefore(li, table.firstChild);
+					if(userList) {
+						addUser(userList);
+					} else {
+						mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
 					}
-					mui('#refreshContainer').pullRefresh().endPulldownToRefresh(); //refresh completed
-					//刷新音效
-					refreshSound();
 				}, 600);
+
+				//				setTimeout(function() {
+				//					var table = document.body.querySelector('.mui-table-view');
+				//					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+				//					for(var i = cells.length, len = i + 3; i < len; i++) {
+				//						var li = document.createElement('li');
+				//						li.className = 'mui-table-view-cell';
+				//						var newStr = '';
+				//						newStr = '<div class="mui-slider-right mui-disabled">';
+				//						newStr += '<a class="mui-btn mui-btn-grey">标为未读</a>';
+				//						newStr += '<a class="delete-btn mui-btn mui-btn-red">删除</a>';
+				//						newStr += '</div>';
+				//						newStr += '<div class="mui-slider-handle mui-clearfix">';
+				//						newStr += '<a href="javascript:;">';
+				//						newStr += '	<img class="mui-media-object mui-pull-left" src="../../images/yhy.png" />';
+				//						newStr += '<div class="mui-media-body">';
+				//						newStr += '<div class="mui-clearfix">';
+				//						newStr += '<h4 class="oa-contact-name mui-pull-left">姚海洋 ' + (i + 1) + '</h4>';
+				//						newStr += '<span class="oa-contact-time mui-pull-right">' + (i + 1) + '分钟前</span>';
+				//						newStr += '</div>';
+				//						newStr += '<p class="mui-ellipsis">遇见你很高兴</p>';
+				//						newStr += '</div>';
+				//						newStr += '</a>';
+				//						newStr += '</div>';
+				//						li.innerHTML = newStr;
+				//						//下拉刷新，新纪录插到最前面；
+				//						table.insertBefore(li, table.firstChild);
+				//					}
+				//					mui('#refreshContainer').pullRefresh().endPulldownToRefresh(); //refresh completed
+				//					//刷新音效
+				//					soundHandle('refresh.mp3');
+				//				}, 600);
 			}
 			var count = 0;
 			/**
 			 * 上拉加载具体业务实现
 			 */
 			function pullupRefresh() {
-				setTimeout(function() {
-					mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > 5)); //参数为true代表没有更多数据了。
-					var table = document.body.querySelector('.mui-table-view');
-					var cells = document.body.querySelectorAll('.mui-table-view-cell');
-					for(var i = cells.length, len = i + 3; i < len; i++) {
-						var li = document.createElement('li');
-						li.className = 'mui-table-view-cell';
-						var newStr = '';
-						newStr = '<div class="mui-slider-right mui-disabled">';
-						newStr += '<a class="mui-btn mui-btn-grey">标为未读</a>';
-						newStr += '<a class="delete-btn mui-btn mui-btn-red">删除</a>';
-						newStr += '</div>';
-						newStr += '<div class="mui-slider-handle mui-clearfix">';
-						newStr += '<a href="javascript:;">';
-						newStr += '	<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg" />';
-						newStr += '<div class="mui-media-body">';
-						newStr += '<div class="mui-clearfix">';
-						newStr += '<h4 class="oa-contact-name mui-pull-left">姚海洋' + (i - 1) + '</h4>';
-						newStr += '<span class="oa-contact-time mui-pull-right">' + (i - 1) + '分钟前</span>';
-						newStr += '</div>';
-						newStr += '<p class="mui-ellipsis">遇见你很高兴</p>';
-						newStr += '</div>';
-						newStr += '</a>';
-						newStr += '</div>';
-						li.innerHTML = newStr;
-						table.appendChild(li);
-					}
-				}, 400);
+				mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+				//				setTimeout(function() {
+				//					mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > 5)); //参数为true代表没有更多数据了。
+				//					var table = document.body.querySelector('.mui-table-view');
+				//					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+				//					for(var i = cells.length, len = i + 3; i < len; i++) {
+				//						var li = document.createElement('li');
+				//						li.className = 'mui-table-view-cell';
+				//						var newStr = '';
+				//						newStr = '<div class="mui-slider-right mui-disabled">';
+				//						newStr += '<a class="mui-btn mui-btn-grey">标为未读</a>';
+				//						newStr += '<a class="delete-btn mui-btn mui-btn-red">删除</a>';
+				//						newStr += '</div>';
+				//						newStr += '<div class="mui-slider-handle mui-clearfix">';
+				//						newStr += '<a href="javascript:;">';
+				//						newStr += '	<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg" />';
+				//						newStr += '<div class="mui-media-body">';
+				//						newStr += '<div class="mui-clearfix">';
+				//						newStr += '<h4 class="oa-contact-name mui-pull-left">姚海洋' + (i - 1) + '</h4>';
+				//						newStr += '<span class="oa-contact-time mui-pull-right">' + (i - 1) + '分钟前</span>';
+				//						newStr += '</div>';
+				//						newStr += '<p class="mui-ellipsis">遇见你很高兴</p>';
+				//						newStr += '</div>';
+				//						newStr += '</a>';
+				//						newStr += '</div>';
+				//						li.innerHTML = newStr;
+				//						table.appendChild(li);
+				//					}
+				//				}, 400);
 			}
 
 			mui.plusReady(function() {
-				//预加载聊天窗口页面（因为聊天页面内容不刷新，暂定）
-				webview_chat = mui.preload({
-					url: '../chat/chat.html',
-					id: 'chat'
-				});
+				plus.runtime.setBadgeNumber(0);
 			});
 
 			if(mui.os.plus) {
@@ -355,10 +359,10 @@
 							}, 0);
 							break;
 						case 1:
-							li.classList.add('seayao');
 							setTimeout(function() {
-								li.parentNode.removeChild(li);
-							}, 300);
+								mui.toast('暂不支持删除');
+								mui.swipeoutClose(li);
+							}, 0);
 							break;
 					}
 				});
@@ -369,17 +373,77 @@
 				mui('#popover').popover('hide');
 			});
 
+			//聊天配置
+			var userSelf = {};
+			var userId = null;
+
+			var dataObj = {
+				name: '姚海洋',
+				img: 'avatar',
+				time: formatDate()
+			};
+			socket.emit('login', dataObj);
+
+			//把在线用户渲染到界面上
+			function addUser(userList) {
+				console.log('在线用户列表：', JSON.stringify(userList));
+				var dataList = document.body.querySelector('#dataList');
+				dataList.innerHTML = '';
+				userList.forEach(function(v, i, a) {
+					var li = document.createElement('li');
+					li.className = 'mui-table-view-cell';
+					li.setAttribute('data-id', v.id);
+					var newStr = '';
+					newStr = '<div class="mui-slider-right mui-disabled">';
+					newStr += '<a class="mui-btn mui-btn-grey">标为未读</a>';
+					newStr += '<a class="delete-btn mui-btn mui-btn-red">删除</a>';
+					newStr += '</div>';
+					newStr += '<div class="mui-slider-handle mui-clearfix">';
+					newStr += '<a href="javascript:;">';
+					newStr += '	<img class="mui-media-object mui-pull-left" src="../../images/ronger.jpg" />';
+					newStr += '<div class="mui-media-body">';
+					newStr += '<div class="mui-clearfix">';
+					newStr += '<h4 class="oa-contact-name mui-pull-left">' + v.name + i + '</h4>';
+					newStr += '<span class="oa-contact-time mui-pull-right">' + v.time + '</span>';
+					newStr += '</div>';
+					newStr += '<p class="mui-ellipsis">遇见你很高兴</p>';
+					newStr += '</div>';
+					newStr += '</a>';
+					newStr += '</div>';
+					li.innerHTML = newStr;
+					dataList.appendChild(li);
+				});
+			}
+
+			//设置程序图标右上角显示的提示数字
+			function setBadge(userList) {
+				plus.runtime.setBadgeNumber(userList.length);				
+				if(plus.os.name == "iOS") {
+					mui.toast('*如果无法设置提示数字，请到"设置"->"通知"中配置应用在通知中心显示!');
+				} else {
+					mui.toast('注：仅支持小米(MIUI v5)，其它设备暂不支持此功能!');
+				}
+			}
+
+			//预加载聊天窗口页面（因为聊天页面内容不刷新，暂定）
+			webview_chat = mui.preload({
+				url: '../chat/chat.html',
+				id: 'chat'
+			});
+
 			//加载聊天窗口页面
 			mui('#dataList').on('tap', '.mui-table-view-cell', function() {
 				var nickname = this.querySelector('.oa-contact-name').innerText;
+				userId = this.getAttribute('data-id');
 				//触发子窗口展开聊天
 				mui.fire(webview_chat, 'get_chat', {
 					iconText: '消息',
-					nickname: nickname
+					nickname: nickname,
+					userId: userId
 				});
 				//加载聊天窗口页面
 				setTimeout(function() {
-					webview_detail.show("slide-in-right", 300);
+					webview_chat.show("slide-in-right", 300);
 				}, 150);
 			});
 		</script>

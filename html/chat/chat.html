@@ -409,20 +409,24 @@
 		<script src="../../js/arttmpl.js"></script>
 		<script src="../../plugins/socket.io/socket.io.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script src="socketio-client.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
 			(function($, doc) {
+				var userSelf = {},
+					userId = null;
 				//监听自定义事件，获取用户信息
 				document.addEventListener('get_chat', function(event) {
 					var iconText = event.detail.iconText;
 					var nickname = event.detail.nickname;
+					userId = event.detail.userId;
 					if(!nickname) {
 						return;
 					}
 					document.querySelector('#iconText').innerText = iconText;
 					document.querySelector('#nickname').innerText = nickname;
 				});
-				
-				//聊天初始化
+
+				//聊天ui初始化
 				var MIN_SOUND_TIME = 800;
 				$.init({
 					gestureConfig: {
@@ -525,33 +529,32 @@
 						ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
 					}, false);
 
-					//监听信息接收
-//					socket.on("receive", function(data, fn) {
-//						var receiveMsg = {
-//							sender: 'zs',
-//							type: 'text',
-//							content: data.text,
-//							time: formatDate()
-//
-//							//							id: '',
-//							//							sender: data.senderName,
-//							//							avatar: data.senderAvatar,
-//							//							self: localStorage.account,
-//							//							type: data.contType,
-//							//							content: data.mailCont
-//						};
-//						record.push(receiveMsg);
-//						bindMsgList();
-//					});
-
 					//消息发送
 					var send = function(msg) {
 						record.push(msg);
-//						socket.emit('toOne', msg);
-						bindMsgList();
-						
-						//toRobot(msg.content);
+						var msgObj = {
+							from: userSelf,
+							to: userId,
+							msg: msg.content,
+							sendTime: msg.time
+						};
+						socket.emit('toOne', msgObj);
+						addMsg(msgObj, true);
 					};
+
+					//消息渲染
+					var addMsg = function(msgObj, isSelf) {
+						console.log(msgObj)
+						console.log(JSON.stringify(msgObj))
+						record.push({
+							sender: 'zs',
+							type: 'text',
+							content: msgObj.msg,
+							time: msgObj.sendTime
+						});
+						bindMsgList();
+					}
+
 					//图灵机器人聊天
 					//					var toRobot = function(info) {
 					//						var apiUrl = 'http://www.tuling123.com/openapi/api';

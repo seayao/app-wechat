@@ -1,23 +1,24 @@
 //本地测试
-var chatServer = 'http://localhost:8080';
-
-//线上测试
 //var chatServer = 'http://localhost:8080';
 
-//刷新音效
-function refreshSound() {
+//线上测试
+var chatServer = 'http://101.132.174.97:8080';
+
+//音效处理
+function soundHandle(res, timer) {
+	var timer = timer || 1200;
 	var p = null,
 		volume = plus.device.getVolume();
 	if(volume > 0) {
 		// Play audio
-		p = plus.audio.createPlayer('_www/audio/refresh.mp3');
+		p = plus.audio.createPlayer('_www/audio/' + res);
 		p.play();
 		setTimeout(function() {
 			// Stop play audio
 			p.stop();
 			delete p;
 			p = null;
-		}, 1200)
+		}, timer);
 	}
 }
 
