@@ -15,7 +15,7 @@ socket.on('logoutInfo', function (msg) {
 });
 
 //add user in ui
-//当有用户登录时，把该用户的信息渲染在用户在线列表里
+//当有用户登录或者登出时，把该用户的信息渲染在用户在线列表里
 socket.on('userList', function (userList) {
     addUser(userList);
     setBadge(userList);

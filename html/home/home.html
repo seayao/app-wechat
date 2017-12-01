@@ -417,12 +417,16 @@
 
 			//设置程序图标右上角显示的提示数字
 			function setBadge(userList) {
-				plus.runtime.setBadgeNumber(userList.length);				
-				if(plus.os.name == "iOS") {
-					mui.toast('*如果无法设置提示数字，请到"设置"->"通知"中配置应用在通知中心显示!');
-				} else {
-					mui.toast('注：仅支持小米(MIUI v5)，其它设备暂不支持此功能!');
-				}
+				if(userList.length >= 1){
+					plus.runtime.setBadgeNumber(userList.length - 1);
+				}else{
+					plus.runtime.setBadgeNumber(userList.length);
+				}			
+//				if(plus.os.name == "iOS") {
+//					mui.toast('如果无法设置提示数字，请到"设置"->"通知"中配置应用在通知中心显示!');
+//				} else {
+//					mui.toast('注：仅支持小米(MIUI v5)，其它设备暂不支持此功能!');
+//				}
 			}
 
 			//预加载聊天窗口页面（因为聊天页面内容不刷新，暂定）
