@@ -3,7 +3,7 @@ var socket = io.connect(chatServer);
 //when sb login
 //当有用户登录时，会提示该用户上线
 socket.on('loginInfo', function (msg) {
-      soundHandle('online.mp3');
+    soundHandle('online.mp3');
     //console.log('loginInfo', msg);
 });
 
@@ -18,7 +18,7 @@ socket.on('logoutInfo', function (msg) {
 //当有用户登录或者登出时，把该用户的信息渲染在用户在线列表里
 socket.on('userList', function (userList) {
     addUser(userList);
-    setBadge(userList);
+//  setBadge(userList);
     //console.log('userList', userList);
 });
 

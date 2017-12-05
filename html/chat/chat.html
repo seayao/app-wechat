@@ -532,6 +532,7 @@
 
 					//消息发送
 					var send = function(msg) {
+						//把我的消息渲染在页面上
 						record.push(msg);
 						var msgObj = {
 							from: userSelf,
@@ -539,20 +540,22 @@
 							msg: msg.content,
 							sendTime: msg.time
 						};
+						//发送消息
 						socket.emit('toOne', msgObj);
 						addMsg(msgObj, true);
 					};
 
 					//消息渲染
 					var addMsg = function(msgObj, isSelf) {
-						console.log(msgObj)
 						console.log(JSON.stringify(msgObj))
-						record.push({
-							sender: msgObj.from.id,
-							type: 'text',
-							content: msgObj.msg,
-							time: msgObj.sendTime
-						});
+						if(msgObj.from.id == msgObj.to) {
+							record.push({
+								sender: msgObj.from.id,
+								type: 'text',
+								content: msgObj.msg,
+								time: msgObj.sendTime
+							});
+						}
 						bindMsgList();
 					}
 
