@@ -124,7 +124,7 @@
 		var webview_chat = null;
 
 		//预加载聊天窗口页面（因为聊天页面内容不刷新，暂定）
-		webview_chat = mui.openWindow({
+		webview_chat = mui.preload({
 			url: '../chat/chat.html',
 			id: 'chat'
 		});

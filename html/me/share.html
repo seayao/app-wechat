@@ -296,6 +296,7 @@
 				share.send(msg, function() {
 					console.log("分享到\"" + share.description + "\"成功！ ");
 				}, function(e) {
+					mui.alert(e.message);
 					console.log("分享到\"" + share.description + "\"失败: " + e.code + " - " + e.message);
 				});
 			}

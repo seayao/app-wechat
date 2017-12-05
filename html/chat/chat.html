@@ -419,6 +419,7 @@
 					var iconText = event.detail.iconText;
 					var nickname = event.detail.nickname;
 					userId = event.detail.userId;
+					userSelf = event.detail.userSelf;
 					if(!nickname) {
 						return;
 					}
@@ -547,7 +548,7 @@
 						console.log(msgObj)
 						console.log(JSON.stringify(msgObj))
 						record.push({
-							sender: 'zs',
+							sender: msgObj.from.id,
 							type: 'text',
 							content: msgObj.msg,
 							time: msgObj.sendTime
